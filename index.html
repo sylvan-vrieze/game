@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <script src="game.js"></script>
+        <link rel="stylesheet" href="style.css"> 
+    </head>
+    <body>
+        <div>
+            <div class="resourceBar">
+                <div id="resName" class="part">
+                    <div id="populationName" class="resName">population:</div>
+                    <div id="knowledgeName" class="resName">knowledge:</div>
+                    <div id="foodName" class="resName">food:</div>
+                    <div id="woodName" class="resName">wood:</div>
+                    <div id="stoneName" class="resName">stone:</div>
+                </div>
+                <div id="resAmount" class="part">
+                    <div id="populationAmount" class="resAmount">0</div>
+                    <div id="knowledgeAmount" class="resAmount">0</div>
+                    <div id="foodAmount" class="resAmount">0</div>
+                    <div id="woodAmount" class="resAmount">0</div>
+                    <div id="stoneAmount" class="resAmount">0</div>
+                </div>
+                <div id="resMax" class="part">
+                    <div id="populationMax" class="resMax">/10</div>
+                    <div id="knowledgeMax" class="resMax">/100</div>
+                    <div id="foodMax" class="resMax">/500</div>
+                    <div id="woodMax" class="resMax">/500</div>
+                    <div id="stoneMax" class="resMax">/500</div>
+                </div>
+                <div id="resProd" class="part">
+                    <div id="knowledgeProd" class="resProd">+0/s</div>
+                    <div id="foodProd" class="resProd">+0/s</div>
+                    <div id="woodProd" class="resProd">+0/s</div>
+                    <div id="stoneProd" class="resProd">+0/s</div>
+                </div>
+            </div>
+
+            <div id="tab" class="tab">
+                <button class="tablinks" onclick="openTab(event, 'building content')">buildings</button>
+            </div>  
+            <div class="tooltip">
+                <span id="tooltip" class="tooltiptext">text</span>
+                <div id="contentlist" class="all">
+                    <div id="building content" class="tabcontent">
+                        <button onclick="clickresource(food)" onmouseover="editTooltip('gather',food)" class="button">gather food</button> 
+                        <button onclick="clickresource(wood)" onmouseover="editTooltip('gather',wood)" class="button">gather wood</button>
+                        <button onclick="clickresource(stone)" onmouseover="editTooltip('gather',stone)" class="button">gather stone</button><br>
+                        <div id="production building" class="buildingCatogry">
+                            production buildings: <br>
+                            <button onclick="addBuilding(farm)" onmouseover="editTooltip('building',farm)" id="farm" class="button">farm</button> 
+                            <button onclick="addBuilding(lumberjackHut)" onmouseover="editTooltip('building',lumberjackHut)" id="lumberjack hut" class="button">lumberjack hut</button> 
+                            <button onclick="addBuilding(quarry)" onmouseover="editTooltip('building',quarry)" id="quarry" class="button">quarry</button> 
+                        </div>
+                        <div id="storage building" class="buildingCatogry">
+                            storage buildings: <br>
+                            <button onclick="addBuilding(library)" onmouseover="editTooltip('building',library)" id="library" class="button">library</button>
+                        </div>
+                        <div id="housing building" class="buildingCatogry">
+                            housing: <br>
+                            <button onclick="addBuilding(simpleHouse)" onmouseover="editTooltip('building',simpleHouse)" id="simple house" class="button">simple house</button> 
+                        </div>
+                        <button onclick="cheatTest('+')"></button><button onclick="cheatTest('-')"></button><!--<button onclick="createMarket()"></button>-->
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
