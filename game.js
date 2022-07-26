@@ -65,16 +65,16 @@ const farmer = new job(5,"farmer",[0,1],0,[food],[0.2],["none"],[0],false)
 const librarian = new job(6,"librarian",[0,1],0,[knowledge],[0.02],["none"],[0],false)
 //const = new job(,"",[0,1],0,[""],,[""],[],false)
 const jobArray = [lumberjack,qaurryworker,miner,coalminer,smelter,farmer,librarian]
-var jobtab = 0
+var jobtab = false
 function addjob(jobType) {
-    if(jobtab == 0) {
+    if(jobtab == false) {
         addtab("jobs")
         const element = document.createElement("span");
         element.innerHTML = `assigned 0/${population.amount}`;
         element.id = "asPop"
         document.getElementById("jobs content").appendChild(element);
         document.getElementById(element.id).classList.add("large")
-        jobtab = 1
+        jobtab = true
     }
     if(jobType.uipresent == false) {
         createJobUi(jobType)
@@ -137,12 +137,13 @@ const lumberjackHut = new building("lumberjack hut",9,"production",0,[10],1.2,[w
 //const = new building("",,0,[],,[""],[""],[],[""],[],[""],[])
 const buildingArray = [sawmill,quarry,mine,coalMine,smeltery,wharehouse,farm,library,simpleHouse,lumberjackHut]
 var researchUlocked = false
-function addBuilding(building) {
+function changeBuildingAmount(building,op) {
     if(checkCost(building.cost.resource,building.cost.cost) == 1) {
-        building.amount += 1
+        building.amount = operations[op](building.amount,1)
+        console.log(building.amount)
         if(building.job.type[0] != "none") {
             for(var i = 0; i < building.job.type.length; i++) {
-                building.job.type[i].max += 1
+                building.job.type[i].max = operations[op](building.job.type[i].max,1)
                 addjob(building.job.type[i])
             }
         }
@@ -150,21 +151,20 @@ function addBuilding(building) {
             for(var s = 0; s < building.storage.type.length; s++) {
                 var storeRes = building.storage.type[s]
                 if (storeRes.unlocked == true) {
-                    storeRes.storageLimit += building.storage.amount[s]
+                    storeRes.storageLimit = operations[op](storeRes.storageLimit,building.storage.amount[s])
                     document.getElementById(`${storeRes.name}Max`).innerHTML = `/${storeRes.storageLimit}`
                 }
             }
         }
         if(building.modifier.type[0] != "none") {
-            changeModifier(building.modifier.type,building.modifier.multiplier)
+            changeModifier(building.modifier.type,building.modifier.multiplier,op)
         }
         for(var j = 0; j < building.cost.cost.length; j++) {
             building.cost.cost[j] = Math.round((building.cost.cost[j] * building.cost.multiplier) * 10) / 10
         }
-        document.getElementById(building.name).innerHTML = `${building.name} owned:${building.amount}`
+        document.getElementById(`${building.name}Count`).innerHTML = `${building.amount}`
         editTooltip("building",building)
         if(building == library && researchUlocked == false ) {
-            console.log(researchUlocked)
             createResearchLab()
             researchUlocked = true
         }  
@@ -185,7 +185,7 @@ function upgrade(name,id,explanation,MType,MAmount,CType,CAmount,effect) {
     }
     this.effect = effect
 }
-const strongerAxe = new upgrade("Stronger Axe",0,"Stronger axes allow for faster cutting",[wood],[0.20],[copperIngot],[50],function(){if(checkCost([copperIngot],[50]) == 1) {changeModifier([wood],[0.20]);removeElement("Stronger Axe")}});
+const strongerAxe = new upgrade("Stronger Axe",0,"Stronger axes allow for faster cutting",[wood],[0.20],[copperIngot],[50],function(){if(checkCost([copperIngot],[50]) == 1) {changeModifier([wood],[0.20],"+");removeElement("Stronger Axe")}});
 const upgradeArray = [strongerAxe];
 function createWorkshop() {
         addtab("upgrade")
@@ -343,9 +343,9 @@ function updateProd(curres) {
         document.getElementById(`${curres.name}Prod`).innerHTML = `${resEndProd}/s`
     }
 }
-function changeModifier(modType,modAmount) {
+function changeModifier(modType,modAmount,op) {
     for(var s = 0; s < modType.length; s++) {
-        modType[s].modifier += modAmount[s]
+        modType[s].modifier = operations[op](modType[s].modifier,modAmount[s])
         updateProd(modType[s])
     }
 }
@@ -488,21 +488,19 @@ function setInactive(negres) {
     }
 }
 function populationCheck() {
-    foods = resourceArray[0]
-    pop = resourceArray[7]
-    if(pop.storageLimit != pop.amount && foods.amount > 0) {
-        pop.amount += 1
-        foods.comsumption += 0.1
-        document.getElementById(`${pop.name}Amount`).innerHTML = pop.amount
-    } else if(foods.amount < 0) {
-        pop.amount -= 1
-        foods.comsumption -= 0.1
-        document.getElementById(`${pop.name}Amount`).innerHTML = pop.amount
+    if(population.storageLimit != population.amount && food.amount > 0) {
+        population.amount += 1
+        food.comsumption += 0.1
+        document.getElementById(`${population.name}Amount`).innerHTML = population.amount
+    } else if(food.amount < 0 && population.amount != 0) {
+        population.amount -= 1
+        food.comsumption -= 0.1
+        document.getElementById(`${population.name}Amount`).innerHTML = population.amount
     }
-    if(jobtab == 1) {
+    if(jobtab == true) {
         updateAssigned(0,"+")
     }
-    updateProd(foods) 
+    updateProd(food) 
 }
 setInterval(function(){autoProduction();},100);
 setInterval(function(){populationCheck();},10000);
@@ -536,7 +534,9 @@ function openTab(evt, tabName) {
 }
 var operations = {
     "+": function(a,b) { return a + b},
-    "-": function(a,b) { return a - b}
+    "-": function(a,b) { return a - b},
+    "*": function(a,b) { return a * b},
+    ":": function(a,b) { return a / b},
 }
 //-----------------------------------------------------------------------------------------------------------------------------------
 function removeElement(id) { document.getElementById(id).remove(); }
@@ -554,19 +554,24 @@ function addtab(tabName) {
     document.getElementById(tabcontent.id).classList.add("tabcontent")
 }
 function createButton(item) {
-    const button = document.createElement("button")
+    const button = document.createElement("div")
     button.id = item.name
-    button.innerHTML = item.name
     if(item.constructor == building) {
-        button.onclick = function() {addBuilding(item)}
+        button.onclick = function() {changeBuildingAmount(item)}
+        button.innerHTML = `<span>${item.name}</span>
+        <div class="buildingCount" id="${item.name}Count">0</div>
+        <div class="buildingSell">sell</div>`
         document.getElementById(`${item.type} ${item.constructor.name}`).appendChild(button)
+        document.getElementById(item.name).classList.add("buildingButton")
     } else {
         button.onclick = function() {
             effect = item.effect
             effect()
         }
+        button.innerHTML = item.name
         document.getElementById(`${item.constructor.name} content`).appendChild(button)
+        document.getElementById(item.name).classList.add("button")
     }
     button.onmouseover = function() {editTooltip(`${item.constructor.name}`,item)} 
-    document.getElementById(item.name).classList.add("button")
+    
 }
