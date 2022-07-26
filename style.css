@@ -3,6 +3,9 @@
   border: 1px;
   float: left;
 }
+.resourceBar .part {
+  display: inline-block;
+}
 .resName {
   width: 90px;
   border: 1px solid #9f9f9f;
@@ -30,9 +33,6 @@
   border-left: hidden;
   border-right: hidden;
   border-top: hidden;
-}
-.resourceBar .part {
-  display: inline-block;
 }
 .button {
   padding: 4px;

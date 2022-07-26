@@ -198,10 +198,16 @@ function upgrade(name,id,explanation,MType,MAmount,CType,CAmount,effect) {
     this.effect = effect
 }
 const strongerAxe = new upgrade("Stronger Axe",0,"Stronger axes allow for faster cutting",[wood],[0.20],[copperIngot],[50],function(){if(checkCost([copperIngot],[50]) == 1) {changeModifier([wood],[0.20],"+");removeElement("Stronger Axe")}});
-const upgradeArray = [strongerAxe];
+const basicWeapons = new upgrade("basic weapons",1,"Basic weapons allow for hunting and warfare",["none"],["none"],[copperIngot],[125],function(){if(checkCost([copperIngot],[125]) == 1) {createWarvareTab()}})
+const upgradeArray = [strongerAxe,basicWeapons];
 function createWorkshop() {
         addtab("upgrade")
         createButton(strongerAxe)
+        createButton(basicWeapons)
+}
+function createWarvareTab() {
+    addtab("warfare")
+    removeElement("basic weapons")
 }
 //--------------------------------------------------------------------------------------------------------------------------------
 function research(name,id,explanation,CType,CAmount,effect) {
@@ -418,8 +424,10 @@ function editTooltip(type,item) {
         text = `${item.name}<br>
         ${costEdit(item.cost.type,item.cost.amount)}
         ${item.explanation}</br>`
-        for(i = 0; i < item.modifier.type.length; i++) {
-            text += `increases the production of ${item.modifier.type[i].name} by ${item.modifier.amount[i]*100}%<br>`
+        if(item.modifier.type[0] != "none") {
+            for(i = 0; i < item.modifier.type.length; i++) {
+                text += `increases the production of ${item.modifier.type[i].name} by ${item.modifier.amount[i]*100}%<br>`
+            }
         }
     } else if(type == "research") {
         text = `${item.name} <br> ${costEdit(item.cost.type,item.cost.amount)} ${item.explanation}`
