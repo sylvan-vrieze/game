@@ -48,7 +48,7 @@
                         <div id="production building" class="buildingCatogry">
                             production buildings: <br>
                             <div onclick="changeBuildingAmount(farm,'+')" onmouseover="editTooltip('building',farm)" id="farm" class="buildingButton">
-                                <span class="buildingSpan">farm</span>
+                                <span>farm</span>
                                 <div class="buildingCount" id="farmCount">0</div>
                                 <div class="buildingSell" onclick="changeBuildingAmount(farm,'-')">sell</div>
                             </div><!--
@@ -68,15 +68,15 @@
                             <div onclick="changeBuildingAmount(library,'+')" onmouseover="editTooltip('building',library)" id="library" class="buildingButton">
                                 <span>library</span>
                                 <div class="buildingCount" id="libraryCount">0</div>
-                                <div class="buildingSell">sell</div>
+                                <div class="buildingSell" onclick="changeBuildingAmount(library,'-')">sell</div>
                             </div><!--
                             --></div>
                         <div id="housing building" class="buildingCatogry">
                             housing: <br>
-                            <div onclick="changeBuildingAmount(simpleHouse,'+')" onmouseover="editTooltip('building',simpleHouse)" id="simple house" class="buildingButton">
-                                <span>simple house</span>
-                                <div class="buildingCount" id="simple houseCount">0</div>
-                                <div class="buildingSell">sell</div>
+                            <div onclick="changeBuildingAmount(simpleHut,'+')" onmouseover="editTooltip('building',simpleHut)" id="simple hut" class="buildingButton">
+                                <span>simple hut</span>
+                                <div class="buildingCount" id="simple hutCount">0</div>
+                                <div class="buildingSell" onclick="changeBuildingAmount(simpleHut,'-')">sell</div>
                             </div><!--
                             --></div>
                         <button onclick="cheatTest('+')"></button><button onclick="cheatTest('-')"></button><!--<button onclick="createMarket()"></button>-->

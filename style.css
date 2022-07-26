@@ -63,6 +63,7 @@
   background-color: #f1f0f0;
   height: 23px;
   margin-right: 42px;
+  font-size: 16px;
 
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -91,9 +92,6 @@
   padding: 4px;
   left: 129px;
 }
-.buildingButton .buildingSpan {
-  width: 1px;
-}
 .jobButton {
   padding: 4px;
   border: 2px solid #e7e7e7;
@@ -105,6 +103,7 @@
 .buildingCatogry {
   width: 750px;
   margin: 5px;
+  font-size: 20px;
 }
 .jobText {
   width: 110px;
