@@ -1,39 +1,52 @@
+/* resource bar styling */
 .resourceBar {
   width: 275px;
   border: 1px;
   float: left;
+  height: 100%;
+  }
+  /* resource bar parts positioning */
+  .resourceBar .part {
+    display: inline-block;
+  }
+  /* styling for different parts */
+  .part .resName {
+      width: 90px;
+      border: 1px solid #9f9f9f;
+      border-left: hidden;
+      border-right: hidden;
+      border-top: hidden;
+    }
+  .part .resAmount {
+      width: auto;
+      border: 1px solid #9f9f9f;
+      border-left: hidden;
+      border-right: hidden;
+      border-top: hidden;
+    }
+  .part .resMax {
+      width: 70px;
+      border: 1px solid #9f9f9f;
+      border-left: hidden;
+      border-right: hidden;
+      border-top: hidden;
+    }
+  .part .resProd {
+      width: auto;
+      border: 1px solid #9f9f9f;
+      border-left: hidden;
+      border-right: hidden;
+      border-top: hidden;
 }
-.resourceBar .part {
-  display: inline-block;
+/*--------------------------------------------------------------------------------------------------------------------------------*/
+.midSection {
+  border: 1px solid black;
 }
-.resName {
-  width: 90px;
-  border: 1px solid #9f9f9f;
-  border-left: hidden;
-  border-right: hidden;
-  border-top: hidden;
+/*--------------------------------------------------------------------------------------------------------------------------------*/
+.all {
+  display: inline-flex;
 }
-.resAmount {
-  width: auto;
-  border: 1px solid #9f9f9f;
-  border-left: hidden;
-  border-right: hidden;
-  border-top: hidden;
-}
-.resMax {
-  width: 70px;
-  border: 1px solid #9f9f9f;
-  border-left: hidden;
-  border-right: hidden;
-  border-top: hidden;
-}
-.resProd {
-  width: auto;
-  border: 1px solid #9f9f9f;
-  border-left: hidden;
-  border-right: hidden;
-  border-top: hidden;
-}
+/*--------------------------------------------------------------------------------------------------------------------------------*/
 .button {
   padding: 4px;
   border: 2px solid #e7e7e7;
@@ -101,7 +114,7 @@
   width: 75px;
 }
 .buildingCatogry {
-  width: 750px;
+  width: 780px;
   margin: 5px;
   font-size: 20px;
 }

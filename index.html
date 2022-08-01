@@ -4,7 +4,7 @@
         <link rel="stylesheet" href="style.css"> 
     </head>
     <body>
-        <div>
+        <div class="all">
             <div class="resourceBar">
                 <div id="resName" class="part">
                     <div id="populationName" class="resName">population:</div>
@@ -34,54 +34,55 @@
                     <div id="stoneProd" class="resProd">+0/s</div>
                 </div>
             </div>
-
-            <div id="tab" class="tab">
-                <button class="tablinks" onclick="openTab(event, 'building content')">buildings</button>
-            </div>  
-            <div class="tooltip">
-                <div id="tooltip" class="tooltiptext">text</div>
-                <div id="contentlist" class="all">
-                    <div id="building content" class="tabcontent">
-                        <div onclick="clickresource(food)" onmouseover="editTooltip('gather',food)" class="button">gather food</div> 
-                        <div onclick="clickresource(wood)" onmouseover="editTooltip('gather',wood)" class="button">gather wood</div> 
-                        <div onclick="clickresource(stone)" onmouseover="editTooltip('gather',stone)" class="button">gather stone</div><br>
-                        <div id="production building" class="buildingCatogry">
-                            production buildings: <br>
-                            <div onclick="changeBuildingAmount(farm,'+')" onmouseover="editTooltip('building',farm)" id="farm" class="buildingButton">
-                                <span>farm</span>
-                                <div class="buildingCount" id="farmCount">0</div>
-                                <div class="buildingSell" onclick="changeBuildingAmount(farm,'-')">sell</div>
-                            </div><!--
-                            --><div onclick="changeBuildingAmount(lumberjackHut,'+')" onmouseover="editTooltip('building',lumberjackHut)" id="lumberjack hut" class="buildingButton">
-                                <span>lumberjack hut</span>
-                                <div class="buildingCount" id="lumberjack hutCount">0</div>
-                                <div class="buildingSell" onclick="changeBuildingAmount(lumberjackHut,'-')">sell</div>
-                            </div><!--
-                            --><div onclick="changeBuildingAmount(quarry,'+')" onmouseover="editTooltip('building',quarry)" id="quarry" class="buildingButton">
-                                <span>quarry</span>
-                                <div class="buildingCount" id="quarryCount">0</div>
-                                <div class="buildingSell" onclick="changeBuildingAmount(quarry,'-')">sell</div>
-                            </div><!--
-                            --></div>
-                        <div id="storage building" class="buildingCatogry">
-                            storage buildings: <br>
-                            <div onclick="changeBuildingAmount(library,'+')" onmouseover="editTooltip('building',library)" id="library" class="buildingButton">
-                                <span>library</span>
-                                <div class="buildingCount" id="libraryCount">0</div>
-                                <div class="buildingSell" onclick="changeBuildingAmount(library,'-')">sell</div>
-                            </div><!--
-                            --></div>
-                        <div id="housing building" class="buildingCatogry">
-                            housing: <br>
-                            <div onclick="changeBuildingAmount(simpleHut,'+')" onmouseover="editTooltip('building',simpleHut)" id="simple hut" class="buildingButton">
-                                <span>simple hut</span>
-                                <div class="buildingCount" id="simple hutCount">0</div>
-                                <div class="buildingSell" onclick="changeBuildingAmount(simpleHut,'-')">sell</div>
-                            </div><!--
-                            --></div>
-                        <button onclick="cheatTest('+')"></button><button onclick="cheatTest('-')"></button><!--<button onclick="createMarket()"></button>-->
-                    </div> 
-                </div>
+            <div class="midSection">
+                <div id="tab" class="tab">
+                    <button class="tablinks" onclick="openTab(event, 'building content')">buildings</button>
+                </div>  
+                <div class="tooltip">
+                    <div id="tooltip" class="tooltiptext">text</div>
+                    <div id="contentlist" class="all">
+                        <div id="building content" class="tabcontent">
+                            <div onclick="clickresource(food)" onmouseover="editTooltip('gather',food)" class="button">gather food</div> 
+                            <div onclick="clickresource(wood)" onmouseover="editTooltip('gather',wood)" class="button">gather wood</div> 
+                            <div onclick="clickresource(stone)" onmouseover="editTooltip('gather',stone)" class="button">gather stone</div><br>
+                            <div id="production building" class="buildingCatogry">
+                                production buildings: <br>
+                                <div onclick="changeBuildingAmount(farm,'+')" onmouseover="editTooltip('building',farm)" id="farm" class="buildingButton">
+                                    <span>farm</span>
+                                    <div class="buildingCount" id="farmCount">0</div>
+                                    <div class="buildingSell" onclick="changeBuildingAmount(farm,'-')">sell</div>
+                                </div><!--
+                                --><div onclick="changeBuildingAmount(lumberjackHut,'+')" onmouseover="editTooltip('building',lumberjackHut)" id="lumberjack hut" class="buildingButton">
+                                    <span>lumberjack hut</span>
+                                    <div class="buildingCount" id="lumberjack hutCount">0</div>
+                                    <div class="buildingSell" onclick="changeBuildingAmount(lumberjackHut,'-')">sell</div>
+                                </div><!--
+                                --><div onclick="changeBuildingAmount(quarry,'+')" onmouseover="editTooltip('building',quarry)" id="quarry" class="buildingButton">
+                                    <span>quarry</span>
+                                    <div class="buildingCount" id="quarryCount">0</div>
+                                    <div class="buildingSell" onclick="changeBuildingAmount(quarry,'-')">sell</div>
+                                </div><!--
+                                --></div>
+                            <div id="storage building" class="buildingCatogry">
+                                storage buildings: <br>
+                                <div onclick="changeBuildingAmount(library,'+')" onmouseover="editTooltip('building',library)" id="library" class="buildingButton">
+                                    <span>library</span>
+                                    <div class="buildingCount" id="libraryCount">0</div>
+                                    <div class="buildingSell" onclick="changeBuildingAmount(library,'-')">sell</div>
+                                </div><!--
+                                --></div>
+                            <div id="housing building" class="buildingCatogry">
+                                housing: <br>
+                                <div onclick="changeBuildingAmount(simpleHut,'+')" onmouseover="editTooltip('building',simpleHut)" id="simple hut" class="buildingButton">
+                                    <span>simple hut</span>
+                                    <div class="buildingCount" id="simple hutCount">0</div>
+                                    <div class="buildingSell" onclick="changeBuildingAmount(simpleHut,'-')">sell</div>
+                                </div><!--
+                                --></div>
+                            <button onclick="cheatTest('+')"></button><button onclick="cheatTest('-')"></button><!--<button onclick="createMarket()"></button>-->
+                        </div> 
+                    </div>
+                </div>  
             </div>
         </div>
     </body>
