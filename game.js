@@ -132,7 +132,7 @@ const smeltery = new building("smeltery",4,"production",0,[10,30],1.3,[wood,ston
 const wharehouse = new building("wharehouse",5,"storage",0,[40,40],1.4,[wood,stone],["none"],[0],[food,wood,stone,copperOre,coal,copperIngot,ironOre,ironIngot,gold],[500,500,500,500,500,250,500,250,100],["none"],[0])
 const farm = new building("farm",6,"production",0,[5],1.2,[wood],[farmer],[1],["none"],[0],["none"],[0])
 const library = new building("library",7,"storage",0,[50,25],1.4,[wood,stone],[librarian],[1],[knowledge],[100],[knowledge],[0.2])
-const simpleHut = new building("simple hut",8,"housing",0,[15,10],1.2,[wood,stone],["none"],[0],[population],[5],["none"],[0])
+const simpleHut = new building("simple hut",8,"housing",0,[15,5],1.2,[wood,stone],["none"],[0],[population],[5],["none"],[0])
 const lumberjackHut = new building("lumberjack hut",9,"production",0,[10],1.2,[wood],[lumberjack],[1],["none"],[0],["none"],[0])
 //const = new building("",,0,[],,[""],[""],[],[""],[],[""],[])
 const buildingArray = [sawmill,quarry,mine,coalMine,smeltery,wharehouse,farm,library,simpleHut,lumberjackHut]
@@ -143,42 +143,40 @@ function changeBuildingAmount(building,op) {
         timerStopt = false
         setTimeout(function(){timerStopt = true},100)
         if(building.amount != 0 || op == "+") {
-            if(checkCost(building.cost.resource,building.cost.cost) == 1 || op == "-") {
-                building.amount = operations[op](building.amount,1)
-                if(building.job.type[0] != "none") {
-                    for(var i = 0; i < building.job.type.length; i++) {
-                        building.job.type[i].max = operations[op](building.job.type[i].max,1)
-                        addjob(building.job.type[i])
-                    }
+            if(checkCost(building.cost.resource,building.cost.cost) != 1 && op == "+") { return }
+            building.amount = operations[op](building.amount,1)
+            if(building.job.type[0] != "none") {
+                for(var i = 0; i < building.job.type.length; i++) {
+                    building.job.type[i].max = operations[op](building.job.type[i].max,1)
+                    addjob(building.job.type[i])
                 }
-                if(building.storage.type[0] != "none") {
-                    for(var s = 0; s < building.storage.type.length; s++) {
-                        var storeRes = building.storage.type[s]
-                        if (storeRes.unlocked == true) {
-                            storeRes.storageLimit = operations[op](storeRes.storageLimit,building.storage.amount[s])
-                            document.getElementById(`${storeRes.name}Max`).innerHTML = `/${storeRes.storageLimit}`
-                        }
-                    }
-                }
-                if(building.modifier.type[0] != "none") {
-                    changeModifier(building.modifier.type,building.modifier.multiplier,op)
-                }
-                for(var j = 0; j < building.cost.cost.length; j++) {
-                    switch(op){ 
-                        case"+": var costOp = "*"; break; 
-                        case"-": var costOp = ":"
-                        building.cost.resource[j].amount += building.cost.cost[j]*1.75 ; break; 
-                    }
-                    building.cost.cost[j] = Math.round((operations[costOp](building.cost.cost[j],building.cost.multiplier))*10) / 10
-
-                }
-                document.getElementById(`${building.name}Count`).innerHTML = `${building.amount}`
-                editTooltip("building",building)
-                if(building == library && researchUlocked == false ) {
-                    createResearchLab()
-                    researchUlocked = true
-                }  
             }
+            if(building.storage.type[0] != "none") {
+                for(var s = 0; s < building.storage.type.length; s++) {
+                    var storeRes = building.storage.type[s]
+                    if (storeRes.unlocked == true) {
+                        storeRes.storageLimit = operations[op](storeRes.storageLimit,building.storage.amount[s])
+                        document.getElementById(`${storeRes.name}Max`).innerHTML = `/${storeRes.storageLimit}`
+                    }
+                }
+            }
+            if(building.modifier.type[0] != "none") {
+                changeModifier(building.modifier.type,building.modifier.multiplier,op)
+            }
+            for(var j = 0; j < building.cost.cost.length; j++) {
+                switch(op){ 
+                    case"+": var costOp = "*"; break; 
+                    case"-": var costOp = ":"
+                    building.cost.resource[j].amount += building.cost.cost[j]*0.75 ; break; 
+                }
+                building.cost.cost[j] = Math.round((operations[costOp](building.cost.cost[j],building.cost.multiplier))*10) / 10
+            }
+            document.getElementById(`${building.name}Count`).innerHTML = `${building.amount}`
+            editTooltip("building",building)
+            if(building == library && researchUlocked == false ) {
+                createResearchLab()
+                researchUlocked = true
+            }  
         }   
     }
 } 

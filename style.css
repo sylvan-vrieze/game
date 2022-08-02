@@ -12,36 +12,26 @@
   /* styling for different parts */
   .part .resName {
       width: 90px;
-      border: 1px solid #9f9f9f;
-      border-left: hidden;
-      border-right: hidden;
-      border-top: hidden;
+      border-bottom: 1px solid #9f9f9f;
     }
   .part .resAmount {
       width: auto;
-      border: 1px solid #9f9f9f;
-      border-left: hidden;
-      border-right: hidden;
-      border-top: hidden;
+      border-bottom: 1px solid #9f9f9f;
     }
   .part .resMax {
       width: 70px;
-      border: 1px solid #9f9f9f;
-      border-left: hidden;
-      border-right: hidden;
-      border-top: hidden;
+      border-bottom: 1px solid #9f9f9f;
     }
   .part .resProd {
       width: auto;
-      border: 1px solid #9f9f9f;
-      border-left: hidden;
-      border-right: hidden;
-      border-top: hidden;
+      border-bottom: 1px solid #9f9f9f;
+  }
+   .part .resImage {
+    margin: 1px;
 }
 /*--------------------------------------------------------------------------------------------------------------------------------*/
 .midSection {
-  border: 1px solid black;
-  width: 48%;
+  width: 50%;
 }
 /*--------------------------------------------------------------------------------------------------------------------------------*/
 .all {
@@ -117,7 +107,7 @@
   width: 75px;
 }
 .buildingCatogry {
-  width: 780px;
+  width: 100%;
   margin: 5px;
   font-size: 20px;
 }
