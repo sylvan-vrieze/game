@@ -1,6 +1,6 @@
 <html>
     <head>
-        <script src="game.js"></script>
+        <script src="JSfiles/main.js" type="module"></script>
         <link rel="stylesheet" href="style.css"> 
     </head>
     <body>
@@ -54,34 +54,44 @@
                             <div onclick="clickresource(stone)" onmouseover="editTooltip('gather',stone)" class="button">gather stone</div><br>
                             <div id="production building" class="buildingCatogry">
                                 production buildings: <br>
-                                <div onclick="changeBuildingAmount(farm,'+')" onmouseover="editTooltip('building',farm)" id="farm" class="buildingButton">
-                                    <span>farm</span>
+                                <div onmouseover="editTooltip('building',farm)" id="farm" class="buildingButton">
+                                    <div class="buildingBuy" onclick="changeBuildingAmount(farm,'+')">
+                                        <span class="buildingText">farm</span>
+                                    </div>
                                     <div class="buildingCount" id="farmCount">0</div>
                                     <div class="buildingSell" onclick="changeBuildingAmount(farm,'-')">sell</div>
                                 </div><!--
-                                --><div onclick="changeBuildingAmount(lumberjackHut,'+')" onmouseover="editTooltip('building',lumberjackHut)" id="lumberjack hut" class="buildingButton">
-                                    <span>lumberjack hut</span>
+                                --><div  onmouseover="editTooltip('building',lumberjackHut)" id="lumberjack hut" class="buildingButton">
+                                    <div class="buildingBuy" onclick="changeBuildingAmount(lumberjackHut,'+')">
+                                        <span class="buildingText">lumberjack hut</span>
+                                    </div>
                                     <div class="buildingCount" id="lumberjack hutCount">0</div>
                                     <div class="buildingSell" onclick="changeBuildingAmount(lumberjackHut,'-')">sell</div>
                                 </div><!--
-                                --><div onclick="changeBuildingAmount(quarry,'+')" onmouseover="editTooltip('building',quarry)" id="quarry" class="buildingButton">
-                                    <span>quarry</span>
+                                --><div  onmouseover="editTooltip('building',quarry)" id="quarry" class="buildingButton">
+                                    <div class="buildingBuy" onclick="changeBuildingAmount(quarry,'+')">
+                                        <span class="buildingText">quarry</span>
+                                    </div>
                                     <div class="buildingCount" id="quarryCount">0</div>
                                     <div class="buildingSell" onclick="changeBuildingAmount(quarry,'-')">sell</div>
                                 </div><!--
                                 --></div>
                             <div id="storage building" class="buildingCatogry">
                                 storage buildings: <br>
-                                <div onclick="changeBuildingAmount(library,'+')" onmouseover="editTooltip('building',library)" id="library" class="buildingButton">
-                                    <span>library</span>
+                                <div  onmouseover="editTooltip('building',library)" id="library" class="buildingButton">
+                                    <div class="buildingBuy" onclick="changeBuildingAmount(library,'+')">
+                                        <span class="buildingText">library</span>
+                                    </div>
                                     <div class="buildingCount" id="libraryCount">0</div>
                                     <div class="buildingSell" onclick="changeBuildingAmount(library,'-')">sell</div>
                                 </div><!--
                                 --></div>
                             <div id="housing building" class="buildingCatogry">
                                 housing: <br>
-                                <div onclick="changeBuildingAmount(simpleHut,'+')" onmouseover="editTooltip('building',simpleHut)" id="simple hut" class="buildingButton">
-                                    <span>simple hut</span>
+                                <div onmouseover="editTooltip('building',simpleHut)" id="simple hut" class="buildingButton">
+                                    <div class="buildingBuy" onclick="changeBuildingAmount(simpleHut,'+')">
+                                        <span class="buildingText">simple hut</span>
+                                    </div>
                                     <div class="buildingCount" id="simple hutCount">0</div>
                                     <div class="buildingSell" onclick="changeBuildingAmount(simpleHut,'-')">sell</div>
                                 </div><!--
