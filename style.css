@@ -1,6 +1,6 @@
 /* resource bar styling */
 .resourceBar {
-  width: 275px;
+  width: 20%;
   border: 1px;
   float: left;
   height: 100%;
@@ -28,6 +28,8 @@
   }
    .part .resImage {
     margin: 1px;
+    width: 16px;
+    height: 16px;
 }
 /*--------------------------------------------------------------------------------------------------------------------------------*/
 .midSection {
@@ -49,7 +51,7 @@
   width: 140px;
   display: inline-block;
   background-color: #f1f0f0;
-  height: 31px;
+  height: 23px;
 
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -199,4 +201,7 @@
 /*-------------------------------------------------------*/
 .large {
   font-size: 20px;
+}
+.picture {
+  width: 40%;
 }
