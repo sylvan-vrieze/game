@@ -1,11 +1,11 @@
-import { food,wood,stone,copperOre,coal,copperIngot,knowledge,population,ironOre,ironIngot,gold } from "./JSfiles/resources.js"
-var resourceArray = [food,wood,stone,copperOre,coal,copperIngot,knowledge,population,ironOre,ironIngot,gold];
+import { food,wood,stone,copperOre,coal,copperIngot,knowledge,population,ironOre,ironIngot,gold,resourceArray } from "./JSfiles/resources.js"
 //-----------------------------------------------------------------------------------------------------------------------------------------
 function clickresource(clickres) { clickres.amount += 1 };
+import { marketUnlocked } from "./JSfiles/research.js";
 function createResourceUI(resource) {
     var resUiArray = [["Name",`${resource.name}:`],["Amount","0"],["Max",`/${resource.storageLimit}`],["Prod",`+0/s`]];
     var resImg = document.createElement('img')
-    resImg.src = `images/${resource.name}.png`
+    resImg.src = `images/resources/${resource.name}.png`
     document.getElementById("resImage").appendChild(resImg)
     resImg.classList.add("resImage")
     for(var i = 0; i < resUiArray.length; i++) {
@@ -20,6 +20,7 @@ function createResourceUI(resource) {
     }
     resource.unlocked = true ;
 }
+export { createResourceUI }
 //------------------------------------------------------------------------------------------------------------------------
 import { lumberjack,qaurryworker,miner,coalminer,smelter,farmer,librarian } from "./JSfiles/jobs.js"
 const jobArray = [lumberjack,qaurryworker,miner,coalminer,smelter,farmer,librarian];
@@ -103,94 +104,14 @@ function changeBuildingAmount(building,op) {
     }   
 } 
 //-------------------------------------------------------------------------------------------------------------------------------
-import { strongerAxe,basicWeapons } from "./JSfiles/upgrade.js";
-function createWorkshop() {
-        addtab("upgrade");
-        createButton(strongerAxe);
-        createButton(basicWeapons);
-}
-function createWarvareTab() {
-    addtab("warfare");
-    removeElement("basic weapons");
-}
-//--------------------------------------------------------------------------------------------------------------------------------
 import { storage,mining,smelting,ironWorking,trade } from "./JSfiles/research.js"
-export { doResearch }
 function createResearchLab() {
     addtab("research");
     createButton(storage);
     createButton(mining);
     createButton(trade);
 }
-function doResearch(button,resource,prodComp,research,costR,costA) {
-    if(checkCost(costR,costA) == 1) {
-        if(button[0] != "none") {
-            for(var i = 0; i < button.length; i++) {
-                createButton(button[i]);
-            }
-        }
-        if(resource[0] != "none") {
-            for(var i = 0; i < resource.length; i++) {
-                createResourceUI(resource[i]);
-            }
-        }
-        if(prodComp[0] != "none") {
-            for(var i = 0; i < prodComp.length; i++) {
-                addProdAndComp(prodComp[i][0],prodComp[i][1],prodComp[i][2],prodComp[i][3],prodComp[i][4]);
-            }
-        }
-        switch(research) {
-            case smelting: createWorkshop(); break;
-            case trade: createMarket(); break;
-        }
-        removeElement(research.name);
-    }
-}
 //--------------------------------------------------------------------------------------------------------------------------------
-function miscellaneous(name,id,CType,CAmount,explanation) {
-    this.name = name;
-    this.id = id;
-    this.cost = {
-        type:CType,
-        amount:CAmount,
-    }
-    this.explanation = explanation;
-}
-const workshop = new miscellaneous("workshop",0,[wood,stone],[300,200],"unlocks upgrades to improve production");
-const researchLab = new miscellaneous("research lab",1,[wood,stone],[200,100],"unlocks research to find new means of production");
-const market = new miscellaneous("market",2,[wood,stone],[250,400],"allows for buying and selling of resources");
-const miscellaneousArray = [workshop,researchLab,market];
-//--------------------------------------------------------------------------------------------------------------------------------
-var marketUnlocked = false
-function createMarket() {
-        addtab("market");
-        var input = document.createElement("input");
-        input.type = "number";
-        input.id = "marketInput";
-        input.value = 100;
-        document.getElementById("market content").appendChild(input);
-        for(var i = 0; i < resourceArray.length; i++) {
-            var curres = resourceArray[i];
-            if(curres.name != "knowledge" && curres.name != "population" && curres.name != "gold") {
-                if(curres.unlocked == true) {
-                    createMarketUI(curres);
-                }
-            } 
-        }
-        marketUnlocked = true;
-}
-function createMarketUI(curres) {
-    const curDiv = document.createElement("div");
-    curDiv.id = `${curres.name}`;
-    curDiv.innerHTML = `<div class="marketText">${curres.name}:</div><button id="${curres.name}buy">buy</button><button id="${curres.name}sell">sell</button>`;
-    document.getElementById("market content").appendChild(curDiv);
-    document.getElementById(`${curres.name}buy`).onclick = function() {marketTransaction(curres,"+")};
-    document.getElementById(`${curres.name}sell`).onclick = function() {marketTransaction(curres,"-")};
-    document.getElementById(`${curres.name}buy`).onmouseover = function() {editTooltip('market buy',curres)};
-    document.getElementById(`${curres.name}sell`).onmouseover = function() {editTooltip('market sell',curres)};
-    document.getElementById(`${curres.name}buy`).classList.add("marketButton");
-    document.getElementById(`${curres.name}sell`).classList.add("marketButton");
-}
 function marketTransaction(curres,op) {
     var gold = resourceArray[10];
     var amount = document.getElementById("marketInput").value;
@@ -206,6 +127,21 @@ function marketTransaction(curres,op) {
         }
     }
 }
+export { marketTransaction }
+//----------------------------------------------------------------------------------------------------------------------------------
+function miscellaneous(name,id,CType,CAmount,explanation) {
+    this.name = name;
+    this.id = id;
+    this.cost = {
+        type:CType,
+        amount:CAmount,
+    }
+    this.explanation = explanation;
+}
+const workshop = new miscellaneous("workshop",0,[wood,stone],[300,200],"unlocks upgrades to improve production");
+const researchLab = new miscellaneous("research lab",1,[wood,stone],[200,100],"unlocks research to find new means of production");
+const market = new miscellaneous("market",2,[wood,stone],[250,400],"allows for buying and selling of resources");
+const miscellaneousArray = [workshop,researchLab,market];
 //--------------------------------------------------------------------------------------------------------------------------------
 function checkCost(resType,resAmount) {
     for(var i = 0; i < resType.length; i++) {
@@ -270,6 +206,7 @@ function addProdAndComp(id,prodres,prodAmount,compres,compAmount) {
         updateProd(compres);
     }
 }
+export { checkCost,changeModifier,addProdAndComp }
 //---------------------------------------------------------------------------------------------------------------------------------
 function editTooltip(type,item) {
     if(type == "gather") {
@@ -343,6 +280,7 @@ function costEdit(costType,costAmount) {
     text += "<br>";
     return text;
 }
+export { editTooltip }
 //---------------------------------------------------------------------------------------------------------------------------------
 function autoProduction() {
     for(var i = 0; i < resourceArray.length; i++) { 
@@ -485,6 +423,7 @@ function createButton(item) {
     button.onmouseover = function() {editTooltip(`${item.constructor.name}`,item)}; 
     
 }
+export { removeElement,addtab,createButton }
 //-----------------------------------------------------------------------------------------------------------------------------------------
 document.getElementById("buildingTabButton").addEventListener("click",function(){ openTab(event,'building content')});
 for(var i = 0; i < 5 ; i++) {
