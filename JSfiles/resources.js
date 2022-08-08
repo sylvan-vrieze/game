@@ -23,4 +23,5 @@ const population = new resource(7,"population",0,"none","none",10,1,true,0);
 const ironOre = new resource(8,"iron ore",0,0,0,500,1,false,0.002);
 const ironIngot = new resource(9,"iron ingot",0,0,0,250,1,false,0.0045);
 const gold = new resource(10,"gold",0,0,0,100,1,false,0);
-export { food,wood,stone,copperOre,coal,copperIngot,knowledge,population,ironOre,ironIngot,gold }
+var resourceArray = [food,wood,stone,copperOre,coal,copperIngot,knowledge,population,ironOre,ironIngot,gold];
+export { food,wood,stone,copperOre,coal,copperIngot,knowledge,population,ironOre,ironIngot,gold,resourceArray }
