@@ -1,5 +1,5 @@
 let getId = (i) => document.getElementById(i);
-import { food,wood,stone,copperOre,coal,copperIngot,knowledge,population,ironOre,ironIngot,gold,resourceArray } from "./JSfiles/resources.js"
+import { resources } from "./JSfiles/resources.js"
 //-----------------------------------------------------------------------------------------------------------------------------------------
 function clickresource(clickres) { clickres.amount += 1 };
 import { marketUnlocked } from "./JSfiles/research.js";
@@ -161,9 +161,9 @@ function miscellaneous(name,id,CType,CAmount,explanation) {
     }
     this.explanation = explanation;
 }
-const workshop = new miscellaneous("workshop",0,[wood,stone],[300,200],"unlocks upgrades to improve production");
-const researchLab = new miscellaneous("research lab",1,[wood,stone],[200,100],"unlocks research to find new means of production");
-const market = new miscellaneous("market",2,[wood,stone],[250,400],"allows for buying and selling of resources");
+const workshop = new miscellaneous("workshop",0,[resources.wood,resources.stone],[300,200],"unlocks upgrades to improve production");
+const researchLab = new miscellaneous("research lab",1,[resources.wood,resources.stone],[200,100],"unlocks research to find new means of production");
+const market = new miscellaneous("market",2,[resources.wood,resources.stone],[250,400],"allows for buying and selling of resources");
 const miscellaneousArray = [workshop,researchLab,market];
 //--------------------------------------------------------------------------------------------------------------------------------
 function checkCost(resType,resAmount) {
