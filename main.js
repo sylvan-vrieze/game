@@ -1,3 +1,4 @@
+let getId = (i) => document.getElementById(i);
 import { food,wood,stone,copperOre,coal,copperIngot,knowledge,population,ironOre,ironIngot,gold,resourceArray } from "./JSfiles/resources.js"
 //-----------------------------------------------------------------------------------------------------------------------------------------
 function clickresource(clickres) { clickres.amount += 1 };
@@ -6,14 +7,14 @@ function createResourceUI(resource) {
     var resUiArray = [["Name",`${resource.name}:`],["Amount","0"],["Max",`/${resource.storageLimit}`],["Prod",`+0/s`]];
     var resImg = document.createElement('img')
     resImg.src = `images/resources/${resource.name}.png`
-    document.getElementById("resImage").appendChild(resImg)
+    getId("resImage").appendChild(resImg)
     resImg.classList.add("resImage")
     for(var i = 0; i < resUiArray.length; i++) {
         var resUi = document.createElement('div');
         resUi.id = `${resource.name}${resUiArray[i][0]}`;
         resUi.innerHTML = `${resUiArray[i][1]}`;
-        document.getElementById(`res${resUiArray[i][0]}`).appendChild(resUi);
-        document.getElementById(`${resource.name}${resUiArray[i][0]}`).classList.add(`res${resUiArray[i][0]}`);
+        getId(`res${resUiArray[i][0]}`).appendChild(resUi);
+        getId(`${resource.name}${resUiArray[i][0]}`).classList.add(`res${resUiArray[i][0]}`);
     }
     if(resource.name != "gold" && marketUnlocked == true) {
         createMarketUI(resource);
@@ -25,26 +26,26 @@ export { createResourceUI }
 import { lumberjack,qaurryworker,miner,coalminer,smelter,farmer,librarian } from "./JSfiles/jobs.js"
 const jobArray = [lumberjack,qaurryworker,miner,coalminer,smelter,farmer,librarian];
 var jobtab = false;
-function addjob(jobType) {
-    if(jobtab == false) {
-        addtab("jobs");
-        const element = document.createElement("span");
-        element.innerHTML = `assigned 0/${population.amount}`;
-        element.id = "asPop"
-        document.getElementById("jobs content").appendChild(element);
-        document.getElementById(element.id).classList.add("large");
-        jobtab = true;
-    }
-    if(jobType.uipresent == false) {
-        createJobUi(jobType);
-        jobType.uipresent = true;
-    }
-    var curjob = document.getElementById(jobType.name);
-    curjob.querySelector('span').innerHTML = `${jobType.active[0]}/${jobType.max}`;
-}
+// function addjob(jobType) {
+//     if(jobtab == false) {
+//         addtab("jobs");
+//         const element = document.createElement("span");
+//         element.innerHTML = `assigned 0/${population.amount}`;
+//         element.id = "asPop"
+//         getId("jobs content").appendChild(element);
+//         getId(element.id).classList.add("large");
+//         jobtab = true;
+//     }
+//     if(jobType.uipresent == false) {
+//         createJobUi(jobType);
+//         jobType.uipresent = true;
+//     }
+//     var curjob = getId(jobType.name);
+//     curjob.querySelector('span').innerHTML = `${jobType.active}/${jobType.max}`;
+// }
 var asAmount = 0
 function updateAssigned(amount,op) {
-    var asPop = document.getElementById("asPop");
+    var asPop = getId("asPop");
     asAmount = operations[op](asAmount,amount);
     asPop.innerHTML = `assigned ${asAmount}/${population.amount}`;
 }
@@ -52,12 +53,12 @@ function createJobUi(job) {
     const curjob = document.createElement("div");
     curjob.id = job.name;
     curjob.innerHTML = `<div class="jobText">${job.name}</div><button id="${job.name}As">assign</button><span>0/1</span><button id="${job.name}UnAs">unassign</button>`;
-    document.getElementById("jobs content").appendChild(curjob);
-    document.getElementById(curjob.id).onmouseover = function() {editTooltip('job',job)};
-    document.getElementById(`${job.name}As`).onclick = function() {changeProdAndComp(job,"+")};
-    document.getElementById(`${job.name}UnAs`).onclick = function() {changeProdAndComp(job,"-")};
-    document.getElementById(`${job.name}As`).classList.add("jobButton");
-    document.getElementById(`${job.name}UnAs`).classList.add("jobButton"); 
+    getId("jobs content").appendChild(curjob);
+    getId(curjob.id).onmouseover = function() {editTooltip('job',job)};
+    getId(`${job.name}As`).onclick = function() {changeProdAndComp(job,"+")};
+    getId(`${job.name}UnAs`).onclick = function() {changeProdAndComp(job,"-")};
+    getId(`${job.name}As`).classList.add("jobButton");
+    getId(`${job.name}UnAs`).classList.add("jobButton"); 
 }
 //------------------------------------------------------------------------------------------------------------------------
 import { farm,lumberjackHut,quarry,library,simpleHut,mine,coalMine,smeltery,wharehouse,sawmill,building } from "./JSfiles/buildings.js";
@@ -72,7 +73,7 @@ function changeBuildingAmount(building,op) {
         if(building.job.type[0] != "none") {
             for(var i = 0; i < building.job.type.length; i++) {
                 building.job.type[i].max = operations[op](building.job.type[i].max,1);
-                addjob(building.job.type[i]);
+                job.add(building.job.type[i]);
             }
         }
         if(building.storage.type[0] != "none") {
@@ -80,7 +81,7 @@ function changeBuildingAmount(building,op) {
                 var storeRes = building.storage.type[s];
                 if (storeRes.unlocked == true) {
                     storeRes.storageLimit = operations[op](storeRes.storageLimit,building.storage.amount[s]);
-                    document.getElementById(`${storeRes.name}Max`).innerHTML = `/${storeRes.storageLimit}`;
+                    getId(`${storeRes.name}Max`).innerHTML = `/${storeRes.storageLimit}`;
                 }
             }
         }
@@ -95,7 +96,7 @@ function changeBuildingAmount(building,op) {
             }
             building.cost.cost[j] = Math.round((operations[costOp](building.cost.cost[j],building.cost.multiplier))*10) / 10;
         }
-        document.getElementById(`${building.name}Count`).innerHTML = `${building.amount}`;
+        getId(`${building.name}Count`).innerHTML = `${building.amount}`;
         editTooltip("building",building);
         if(building == library && researchUlocked == false ) {
             createResearchLab();
@@ -111,21 +112,43 @@ function createResearchLab() {
     createButton(mining);
     createButton(trade);
 }
+//------------------------------------------------------------------------------------------------------------------------------
+let job = {
+    type: false, // define job type
+    add: (jobType) => {
+        if(jobtab == false) {
+            addtab("jobs");
+            const element = document.createElement("span");
+            element.innerHTML = `assigned 0/${population.amount}`;
+            element.id = "asPop"
+            getId("jobs content").appendChild(element);
+            getId(element.id).classList.add("large");
+            jobtab = true;
+        }
+        if(jobType.uipresent == false) {
+            createJobUi(jobType);
+            jobType.uipresent = true;
+        }
+        getId(jobType.name).querySelector('span').innerHTML = `${jobType.active}/${jobType.max}`;
+    },
+};
 //--------------------------------------------------------------------------------------------------------------------------------
 function marketTransaction(curres,op) {
-    var gold = resourceArray[10];
-    var amount = document.getElementById("marketInput").value;
+    var amount = Number(getId("marketInput").value);
     if(op == "+") {
         if(gold.amount >= (curres.cost*amount)) {
             curres.amount += amount;
             gold.amount -= (curres.cost*amount);
+            console.log(curres.amount)
         }
     } else if(op == "-") {
         if(curres.amount >= amount) {
             curres.amount -= amount;
             gold.amount += ((curres.cost*amount)*0.8);
+            console.log(amount)
         }
     }
+    amount = 0
 }
 export { marketTransaction }
 //----------------------------------------------------------------------------------------------------------------------------------
@@ -156,8 +179,8 @@ function checkCost(resType,resAmount) {
 }
 function changeProdAndComp(jobType,op) {
     if(asAmount != population.amount || op == "-") {
-        if(jobType.max != jobType.active[0] || op == "-") {
-            if(jobType.active[0] != 0 || op == "+") {
+        if(jobType.max != jobType.active || op == "-") {
+            if(jobType.active != 0 || op == "+") {
                 for(var c = 0; c < jobType.production.type.length; c++) {
                     var prodres = jobType.production.type[c];
                     prodres.production = operations[op](prodres.production,jobType.production.amount[c]);
@@ -170,9 +193,9 @@ function changeProdAndComp(jobType,op) {
                         updateProd(compres);  
                     }          
                 }
-                jobType.active[0] = operations[op](jobType.active[0],1)
-                var curjob = document.getElementById(jobType.name);
-                curjob.querySelector('span').innerHTML = `${jobType.active[0]}/${jobType.max}`;
+                jobType.active = operations[op](jobType.active,1)
+                var curjob = getId(jobType.name);
+                curjob.querySelector('span').innerHTML = `${jobType.active}/${jobType.max}`;
                 updateAssigned(1,op); 
             }  
         }
@@ -181,9 +204,9 @@ function changeProdAndComp(jobType,op) {
 function updateProd(curres) {
     var resEndProd =  Math.round((curres.endProd()*10)*10000)/10000;
     if(curres.endProd() >= 0) {
-        document.getElementById(`${curres.name}Prod`).innerHTML = `+${resEndProd}/s`;
+        getId(`${curres.name}Prod`).innerHTML = `+${resEndProd}/s`;
     } else {
-        document.getElementById(`${curres.name}Prod`).innerHTML = `${resEndProd}/s`;
+        getId(`${curres.name}Prod`).innerHTML = `${resEndProd}/s`;
     }
 }
 function changeModifier(modType,modAmount,op) {
@@ -197,12 +220,12 @@ function addProdAndComp(id,prodres,prodAmount,compres,compAmount) {
     if(prodres != "none") {
         jobType.production.type.push(prodres);
         jobType.production.amount.push(prodAmount);
-        prodres.production += (prodAmount * jobType.active[0]);
+        prodres.production += (prodAmount * jobType.active);
         updateProd(prodres) 
     } else if(compres != "none") {
         jobType.comsumption.type.push(compres);
         jobType.comsumption.amount.push(compAmount);
-        compres.comsumption += (compAmount * jobType.active[0]);
+        compres.comsumption += (compAmount * jobType.active);
         updateProd(compres);
     }
 }
@@ -259,14 +282,14 @@ function editTooltip(type,item) {
         var text = `${item.name} <br> ${costEdit(item.cost.type,item.cost.amount)} ${item.explanation}`;
     } else if(type.includes("market")) {
         var text = `${item.name}<br>`;
-        var amount = document.getElementById("marketInput").value;
+        var amount = getId("marketInput").value;
         if(type.includes("buy")) {
             text += `buy ${amount} <br> cost: ${(Math.round((item.cost*amount)*100)/100)} gold`;
         } else {
             text += `sell ${amount} <br> gain: ${(Math.round(((item.cost*amount)*0.8)*100)/100)} gold`;
         }
     } 
-    document.getElementById('tooltip').innerHTML = text;
+    getId('tooltip').innerHTML = text;
 }
 function costEdit(costType,costAmount) {
     var text = "cost: ";
@@ -293,7 +316,7 @@ function autoProduction() {
             if(curres.amount > curres.storageLimit) {
                 curres.amount = curres.storageLimit;
             }
-            document.getElementById(`${curres.name}Amount`).innerHTML = `${curres.amount}`;
+            getId(`${curres.name}Amount`).innerHTML = `${curres.amount}`;
         }
     }
     checkNegative();
@@ -314,19 +337,18 @@ function setInactive(negres) {
             if(res != "none" && negres == res) {
                 for(var i = 0; i < jobType.comsumption.type.length; i++) {
                     res = jobType.comsumption.type[i];
-                    res.comsumption = res.comsumption - (jobType.comsumption.amount[i] * jobType.active[0]);
+                    res.comsumption = res.comsumption - (jobType.comsumption.amount[i] * jobType.active);
                     updateProd(res);
                 }
                 for(var i = 0; i < jobType.production.type.length; i++) {
                     res = jobType.production.type[i];
-                    res.production = res.production - (jobType.production.amount * jobType.active[0]);
+                    res.production = res.production - (jobType.production.amount * jobType.active);
                     updateProd(res);
                 }
-                updateAssigned(jobType.active[0],"-")
-                jobType.active[0] = 0;
-                jobType.active[1] = 1;
-                curjob = document.getElementById(jobType.name);
-                curjob.querySelector('span').innerHTML = `${jobType.active[0]}/${jobType.max}`;
+                updateAssigned(jobType.active,"-")
+                jobType.active = 0;
+                curjob = getId(jobType.name);
+                curjob.querySelector('span').innerHTML = `${jobType.active}/${jobType.max}`;
                 break;
             }
         } 
@@ -336,11 +358,11 @@ function populationCheck() {
     if(population.storageLimit != population.amount && food.amount > 0) {
         population.amount += 1;
         food.comsumption += 0.1;
-        document.getElementById(`${population.name}Amount`).innerHTML = population.amount;
+        getId(`${population.name}Amount`).innerHTML = population.amount;
     } else if(food.amount < 0 && population.amount != 0) {
         population.amount -= 1;
         food.comsumption -= 0.1;
-        document.getElementById(`${population.name}Amount`).innerHTML = population.amount;
+        getyId(`${population.name}Amount`).innerHTML = population.amount;
     }
     if(jobtab == true) {
         updateAssigned(0,"+");
@@ -360,7 +382,7 @@ window.cheatTest = function(op) {
                 curres.amount = 0;
             }
             curres.amount = Math.round(curres.amount * 100) / 100;
-            document.getElementById(`${curres.name}Amount`).innerHTML = curres.amount;
+            getId(`${curres.name}Amount`).innerHTML = curres.amount;
         }
     }
 }
@@ -373,7 +395,7 @@ function openTab(evt,tabName) {
     for (var i = 0; i < tablinks.length; i++) {
       tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
-    document.getElementById(tabName).style.display = "block";
+    getId(tabName).style.display = "block";
     evt.currentTarget.className += " active";
 }
 var operations = {
@@ -383,19 +405,19 @@ var operations = {
     ":": function(a,b) { return a / b},
 }
 //-----------------------------------------------------------------------------------------------------------------------------------
-function removeElement(id) { document.getElementById(id).remove(); };
+function removeElement(id) { getId(id).remove(); };
 function addtab(tabName) {
     const tab = document.createElement("button");
     tab.id = tabName;
     tab.innerHTML = tabName;
     tab.onclick = function() {openTab(event, `${tabName} content`)};
-    document.getElementById("tab").appendChild(tab);
-    document.getElementById(tabName).classList.add("tablinks") ;
+    getId("tab").appendChild(tab);
+    getId(tabName).classList.add("tablinks") ;
     
     const tabcontent = document.createElement("div");
     tabcontent.id = `${tabName} content`;
-    document.getElementById("contentlist").appendChild(tabcontent);
-    document.getElementById(tabcontent.id).classList.add("tabcontent");
+    getId("contentlist").appendChild(tabcontent);
+    getId(tabcontent.id).classList.add("tabcontent");
 }
 function createButton(item) {
     const button = document.createElement("div");
@@ -407,25 +429,25 @@ function createButton(item) {
         </div>
         <div class="buildingCount" id="${item.name}Count">0</div>
         <div class="buildingSell"  id="${item.name}Sell">sell</div>`;
-        document.getElementById(`${item.type} ${item.constructor.name}`).appendChild(button);
-        document.getElementById(item.name).classList.add("buildingButton");
-        document.getElementById(`${item.name}Sell`).addEventListener("click",function() {changeBuildingAmount(item,'-')});
-        document.getElementById(`${item.name}Buy`).addEventListener("click",function() {changeBuildingAmount(item,'+')});
+        getId(`${item.type} ${item.constructor.name}`).appendChild(button);
+        getId(item.name).classList.add("buildingButton");
+        getId(`${item.name}Sell`).addEventListener("click",function() {changeBuildingAmount(item,'-')});
+        getId(`${item.name}Buy`).addEventListener("click",function() {changeBuildingAmount(item,'+')});
     } else {
         button.onclick = function() {
             var effect = item.effect;
             effect();
         }
         button.innerHTML = item.name
-        document.getElementById(`${item.constructor.name} content`).appendChild(button);
-        document.getElementById(item.name).classList.add("button");
+        getId(`${item.constructor.name} content`).appendChild(button);
+        getId(item.name).classList.add("button");
     }
     button.onmouseover = function() {editTooltip(`${item.constructor.name}`,item)}; 
     
 }
 export { removeElement,addtab,createButton }
 //-----------------------------------------------------------------------------------------------------------------------------------------
-document.getElementById("buildingTabButton").addEventListener("click",function(){ openTab(event,'building content')});
+getId("buildingTabButton").addEventListener("click",function(){ openTab(event,'building content')});
 for(var i = 0; i < 5 ; i++) {
     if(i < 3) {
         addOnclickForClickResouces(i)
@@ -434,13 +456,13 @@ for(var i = 0; i < 5 ; i++) {
 }
 function addOnclickForClickResouces(i) {
     var curRes = resourceArray[i];
-    document.getElementById(`${curRes.name}Gather`).addEventListener("click",function() {clickresource(curRes)});
-    document.getElementById(`${curRes.name}Gather`).addEventListener("mouseover",function() {editTooltip("gather",curRes)});
+    getId(`${curRes.name}Gather`).addEventListener("click",function() {clickresource(curRes)});
+    getId(`${curRes.name}Gather`).addEventListener("mouseover",function() {editTooltip("gather",curRes)});
 }
 function addOnclickForBuilding(i) {
     var curBuilding = buildingArray[i]
-    document.getElementById(`${curBuilding.name}`).addEventListener("mouseover",function(){editTooltip("building",curBuilding)})
-    document.getElementById(`${curBuilding.name}Buy`).addEventListener("click",function(){changeBuildingAmount(curBuilding,"+")})
-    document.getElementById(`${curBuilding.name}Sell`).addEventListener("click",function(){changeBuildingAmount(curBuilding,"-")})
+    getId(`${curBuilding.name}`).addEventListener("mouseover",function(){editTooltip("building",curBuilding)})
+    getId(`${curBuilding.name}Buy`).addEventListener("click",function(){changeBuildingAmount(curBuilding,"+")})
+    getId(`${curBuilding.name}Sell`).addEventListener("click",function(){changeBuildingAmount(curBuilding,"-")})
 }
 //----------------------------------------------------------------------------------------------------------------------------------------
