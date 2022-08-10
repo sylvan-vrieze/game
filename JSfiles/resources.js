@@ -26,5 +26,5 @@ const resources = {
     gold: new resource(10,"gold",0,0,0,100,1,false,0),
 }
 
-var resourceArray = [food,wood,stone,copperOre,coal,copperIngot,knowledge,population,ironOre,ironIngot,gold];
-export { resources,resourceArray }
+//var resourceArray = [food,wood,stone,copperOre,coal,copperIngot,knowledge,population,ironOre,ironIngot,gold];
+export { resources }

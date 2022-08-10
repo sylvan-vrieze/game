@@ -1,4 +1,4 @@
-import { knowledge,copperOre,copperIngot,gold,ironOre,ironIngot,coal,resourceArray } from "./resources.js";
+import { resources } from "./resources.js";
 import { mine,coalMine,wharehouse,smeltery } from "./buildings.js";
 import { createButton,createResourceUI,addProdAndComp,removeElement,addtab,checkCost,editTooltip,marketTransaction } from "../main.js";
 import { strongerAxe,basicWeapons } from "./upgrade.js";
@@ -12,11 +12,11 @@ function research(name,id,explanation,CType,CAmount,effect) {
     }
     this.effect = effect;
 }
-const storage = new research("storage",0,"allows for storing large amounts of resources",[knowledge],[75],function() {doResearch([wharehouse],["none"],["none"],storage,[knowledge],[75])});
-const mining = new research("mining",1,"allows for extraction of new resources",[knowledge],[100],function() {doResearch([smelting,mine,coalMine],[copperOre,coal],["none"],mining,[knowledge],[100])}); 
-const smelting = new research("smelting",2,"allows for turning ore in to usable material",[knowledge],[150],function() {doResearch([smeltery,ironWorking],[copperIngot],["none"],smelting,[knowledge],[150])}); 
-const ironWorking = new research("iron working",3,"make new metals by combining others",[knowledge],[250],function() {doResearch(["none"],[ironOre,ironIngot],[[2,ironOre,0.05,"none",0]],ironWorking,[knowledge],[250])});
-const trade = new research("trade",4,"allows for trading with other civilizations",[knowledge],[450],function(){doResearch(["none"],[gold],[[2,gold,0.01,"none",0]],trade,[knowledge],[450])}); 
+const storage = new research("storage",0,"allows for storing large amounts of resources",[resources.knowledge],[75],function() {doResearch([wharehouse],["none"],["none"],storage,[resources.knowledge],[75])});
+const mining = new research("mining",1,"allows for extraction of new resources",[resources.knowledge],[100],function() {doResearch([smelting,mine,coalMine],[resources.copperOre,resources.coal],["none"],mining,[resources.knowledge],[100])}); 
+const smelting = new research("smelting",2,"allows for turning ore in to usable material",[resources.knowledge],[150],function() {doResearch([smeltery,ironWorking],[resources.copperIngot],["none"],smelting,[resources.knowledge],[150])}); 
+const ironWorking = new research("iron working",3,"make new metals by combining others",[resources.knowledge],[250],function() {doResearch(["none"],[resources.ironOre,resources.ironIngot],[[2,resources.ironOre,0.05,"none",0]],ironWorking,[resources.knowledge],[250])});
+const trade = new research("trade",4,"allows for trading with other civilizations",[resources.knowledge],[450],function(){doResearch(["none"],[resources.gold],[[2,resources.gold,0.01,"none",0]],trade,[resources.knowledge],[450])}); 
 function doResearch(button,resource,prodComp,research,costR,costA) {
     if(checkCost(costR,costA) == 1) {
         if(button[0] != "none") {
@@ -47,23 +47,23 @@ function createWorkshop() {
     createButton(basicWeapons);
 }
 var marketUnlocked = false
-function createMarket() {
-        addtab("market");
-        var input = document.createElement("input");
-        input.type = "number";
-        input.id = "marketInput";
-        input.value = 100;
-        document.getElementById("market content").appendChild(input);
-        for(var i = 0; i < resourceArray.length; i++) {
-            var curres = resourceArray[i];
-            if(curres.name != "knowledge" && curres.name != "population" && curres.name != "gold") {
-                if(curres.unlocked == true) {
-                    createMarketUI(curres);
-                }
-            } 
-        }
-        marketUnlocked = true;
-}
+//function createMarket() {
+//        addtab("market");
+//        var input = document.createElement("input");
+//        input.type = "number";
+//        input.id = "marketInput";
+//        input.value = 100;
+//        document.getElementById("market content").appendChild(input);
+//        for(var i = 0; i < resourceArray.length; i++) {
+//            var curres = resourceArray[i];
+//            if(curres.name != "knowledge" && curres.name != "population" && curres.name != "gold") {
+//                if(curres.unlocked == true) {
+//                    createMarketUI(curres);
+//                }
+//            } 
+//        }
+//        marketUnlocked = true;
+//}
 function createMarketUI(curres) {
     const curDiv = document.createElement("div");
     curDiv.id = `${curres.name}`;

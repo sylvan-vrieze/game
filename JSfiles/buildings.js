@@ -32,6 +32,6 @@ const mine = new building("mine",5,"production",0,[15,10],1.2,[resources.wood,re
 const coalMine = new building("coal mine",6,"production",0,[15,10],1.2,[resources.wood,resources.stone],[coalminer],[1],["none"],[0],["none"],[0]);
 const smeltery = new building("smeltery",7,"production",0,[10,30],1.3,[resources.wood,resources.stone],[smelter],[1],["none"],[0],["none"],[0]);
 const wharehouse = new building("wharehouse",8,"storage",0,[40,40],1.4,[resources.wood,resources.stone],["none"],[0],[resources.food,resources.wood,resources.stone,resources.copperOre,resources.coal,resources.copperIngot,resources.ironOre,resources.ironIngot,resources.gold],[500,500,500,500,500,250,500,250,100],["none"],[0]);
-const sawmill = new building("sawmill",9,"production",0,[10],1.2,[wood],["none"],[0],["none"],[0],["wood"],[0.2]);
+const sawmill = new building("sawmill",9,"production",0,[10],1.2,[resources.wood],["none"],[0],["none"],[0],["wood"],[0.2]);
 //const = new building("",,0,[],,[""],[""],[],[""],[],[""],[])
 export { farm,lumberjackHut,quarry,library,simpleHut,mine,coalMine,smeltery,wharehouse,sawmill,building };
