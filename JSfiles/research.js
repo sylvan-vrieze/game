@@ -1,6 +1,6 @@
 import { resources } from "./resources.js";
 import { buildings } from "./buildings.js";
-import { createButton,addProdAndComp,removeElement,addtab,checkCost,market } from "../main.js";
+import { func,createButton,addProdAndComp,removeElement,addtab,market } from "../main.js";
 import { upgrades } from "./upgrade.js";
 function research(name,id,explanation,CType,CAmount,effect) {
     this.name = name;
@@ -20,7 +20,7 @@ const researches = {
     trade: new research("trade",4,"allows for trading with other civilizations",[resources.knowledge],[450],function(){researches.func.do(["none"],[resources.gold],[[2,resources.gold,0.01,"none",0]],researches.trade,[resources.knowledge],[450])}), 
     func: {
         do: (button,resource,prodComp,research,costR,costA) => {
-            if(checkCost(costR,costA) == 1) {
+            if(func.checkCost(costR,costA) == 1) {
                 if(button[0] != "none") {
                     for(var i = 0; i < button.length; i++) { createButton(button[i]); }
                 }

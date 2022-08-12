@@ -1,4 +1,4 @@
-import { getId } from "../main.js";
+import { func } from "../main.js";
 function resource(id,name,amount,production,comsumption,storageLimit,modifier,unlocked,cost) {
     this.id = id;
     this.name = name;
@@ -31,14 +31,14 @@ const resources = {
             var resUiArray = [["Name",`${res.name}:`],["Amount","0"],["Max",`/${res.storageLimit}`],["Prod",`+0/s`]];
             var resImg = document.createElement('img')
             resImg.src = `images/resources/${res.name}.png`
-            getId("resImage").appendChild(resImg)
+            func.getId("resImage").appendChild(resImg)
             resImg.classList.add("resImage")
             for(var i = 0; i < resUiArray.length; i++) {
                 var resUi = document.createElement('div');
                 resUi.id = `${res.name}${resUiArray[i][0]}`;
                 resUi.innerHTML = `${resUiArray[i][1]}`;
-                getId(`res${resUiArray[i][0]}`).appendChild(resUi);
-                getId(`${res.name}${resUiArray[i][0]}`).classList.add(`res${resUiArray[i][0]}`);
+                func.getId(`res${resUiArray[i][0]}`).appendChild(resUi);
+                func.getId(`${res.name}${resUiArray[i][0]}`).classList.add(`res${resUiArray[i][0]}`);
             }
             if(res.name != "gold" && market.unlocked == true) {
                 market.createUI(res);

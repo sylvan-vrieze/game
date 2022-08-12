@@ -1,4 +1,4 @@
-import { checkCost,changeModifier } from "../main.js";
+import { func,changeModifier,editTooltip,addtab,createButton } from "../main.js";
 import { resources } from "./resources.js";
 import { jobs } from "./jobs.js";
 import { researches } from "./research.js";
@@ -41,12 +41,12 @@ const buildings = {
         changeBuildingAmount: (building,op) => {
             if(building.amount != 0 || op == "+") {
                 if(op == "+") {
-                    if(checkCost(building.cost.resource,building.cost.cost) != 1) { return };
+                    if(func.checkCost(building.cost.resource,building.cost.cost) != 1) { return };
                 }
-                building.amount = operations[op](building.amount,1);
+                building.amount = func.operations[op](building.amount,1);
                 if(building.job.type[0] != "none") {
                     for(var i = 0; i < building.job.type.length; i++) {
-                        building.job.type[i].max = operations[op](building.job.type[i].max,1);
+                        building.job.type[i].max = func.operations[op](building.job.type[i].max,1);
                         jobs.func.add(building.job.type[i]);
                     }
                 }
@@ -54,8 +54,8 @@ const buildings = {
                     for(var s = 0; s < building.storage.type.length; s++) {
                         var storeRes = building.storage.type[s];
                         if (storeRes.unlocked == true) {
-                            storeRes.storageLimit = operations[op](storeRes.storageLimit,building.storage.amount[s]);
-                            getId(`${storeRes.name}Max`).innerHTML = `/${storeRes.storageLimit}`;
+                            storeRes.storageLimit = func.operations[op](storeRes.storageLimit,building.storage.amount[s]);
+                            func.getId(`${storeRes.name}Max`).innerHTML = `/${storeRes.storageLimit}`;
                         }
                     }
                 }
@@ -67,16 +67,16 @@ const buildings = {
                         case"+": var costOp = "*"; break; 
                         case"-": var costOp = ":"; building.cost.resource[i].amount += building.cost.cost[i]*0.75 ; break; 
                     }
-                    building.cost.cost[i] = Math.round((operations[costOp](building.cost.cost[i],building.cost.multiplier))*10) / 10;
+                    building.cost.cost[i] = Math.round((func.operations[costOp](building.cost.cost[i],building.cost.multiplier))*10) / 10;
                 }
-                getId(`${building.name}Count`).innerHTML = `${building.amount}`;
+                func.getId(`${building.name}Count`).innerHTML = `${building.amount}`;
                 editTooltip("building",building);
-                if(building == buildings.library && researchUlocked == false ) {
+                if(building == buildings.library && buildings.func.researchUlocked == false ) {
                     addtab("research");
                     createButton(researches.storage);
                     createButton(researches.mining);
                     createButton(researches.trade);
-                    researchUlocked = true;
+                    buildings.func.researchUlocked = true;
                 }  
             }   
         },

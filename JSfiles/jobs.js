@@ -1,5 +1,5 @@
 import { resources } from "./resources.js"
-import { addtab,getId,operations,editTooltip } from "../main.js";
+import { func,addtab,editTooltip,changeProdAndComp } from "../main.js";
 function job(id,name,active,max,prodType,prodAmount,compType,compAmount,uipresent) {
     this.id = id;
     this.name = name;
@@ -27,20 +27,20 @@ const jobs = {
         tab: false,
         assigned: 0,
         updateAssigned: (amount,op) => {
-            var asPop = getId("asPop");
-            jobs.func.assigned = operations[op](jobs.func.assigned,amount);
+            var asPop = func.getId("asPop");
+            jobs.func.assigned = func.operations[op](jobs.func.assigned,amount);
             asPop.innerHTML = `assigned ${jobs.func.assigned}/${resources.population.amount}`;
         },
         createUi: (jobType) => {
             const curjob = document.createElement("div");
             curjob.id = jobType.name;
             curjob.innerHTML = `<div class="jobText">${jobType.name}</div><button id="${jobType.name}As">assign</button><span>0/1</span><button id="${jobType.name}UnAs">unassign</button>`;
-            getId("jobs content").appendChild(curjob);
-            getId(curjob.id).onmouseover = function() {editTooltip('job',jobType)};
-            getId(`${jobType.name}As`).onclick = function() {changeProdAndComp(jobType,"+")};
-            getId(`${jobType.name}UnAs`).onclick = function() {changeProdAndComp(jobType,"-")};
-            getId(`${jobType.name}As`).classList.add("jobButton");
-            getId(`${jobType.name}UnAs`).classList.add("jobButton");
+            func.getId("jobs content").appendChild(curjob);
+            func.getId(curjob.id).onmouseover = function() {editTooltip('job',jobType)};
+            func.getId(`${jobType.name}As`).onclick = function() {changeProdAndComp(jobType,"+")};
+            func.getId(`${jobType.name}UnAs`).onclick = function() {changeProdAndComp(jobType,"-")};
+            func.getId(`${jobType.name}As`).classList.add("jobButton");
+            func.getId(`${jobType.name}UnAs`).classList.add("jobButton");
         },
         add: (jobType) => {
             if(jobs.func.tab == false) {
@@ -48,15 +48,15 @@ const jobs = {
                 const element = document.createElement("span");
                 element.innerHTML = `assigned 0/${resources.population.amount}`;
                 element.id = "asPop"
-                getId("jobs content").appendChild(element);
-                getId(element.id).classList.add("large");
+                func.getId("jobs content").appendChild(element);
+                func.getId(element.id).classList.add("large");
                 jobs.func.tab = true;
             }
             if(jobType.uipresent == false) {
                 jobs.func.createUi(jobType);
                 jobType.uipresent = true;
             }
-            getId(jobType.name).querySelector('span').innerHTML = `${jobType.active}/${jobType.max}`;
+            func.getId(jobType.name).querySelector('span').innerHTML = `${jobType.active}/${jobType.max}`;
         },
     }
 }
