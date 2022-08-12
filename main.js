@@ -1,171 +1,59 @@
 let getId = (i) => document.getElementById(i);
-import { resources } from "./JSfiles/resources.js"
+export { getId }
 //-----------------------------------------------------------------------------------------------------------------------------------------
-function clickresource(clickres) { clickres.amount += 1 };
-import { marketUnlocked } from "./JSfiles/research.js";
-function createResourceUI(resource) {
-    var resUiArray = [["Name",`${resource.name}:`],["Amount","0"],["Max",`/${resource.storageLimit}`],["Prod",`+0/s`]];
-    var resImg = document.createElement('img')
-    resImg.src = `images/resources/${resource.name}.png`
-    getId("resImage").appendChild(resImg)
-    resImg.classList.add("resImage")
-    for(var i = 0; i < resUiArray.length; i++) {
-        var resUi = document.createElement('div');
-        resUi.id = `${resource.name}${resUiArray[i][0]}`;
-        resUi.innerHTML = `${resUiArray[i][1]}`;
-        getId(`res${resUiArray[i][0]}`).appendChild(resUi);
-        getId(`${resource.name}${resUiArray[i][0]}`).classList.add(`res${resUiArray[i][0]}`);
-    }
-    if(resource.name != "gold" && marketUnlocked == true) {
-        createMarketUI(resource);
-    }
-    resource.unlocked = true ;
-}
-export { createResourceUI }
-//------------------------------------------------------------------------------------------------------------------------
-import { lumberjack,qaurryworker,miner,coalminer,smelter,farmer,librarian } from "./JSfiles/jobs.js"
-const jobArray = [lumberjack,qaurryworker,miner,coalminer,smelter,farmer,librarian];
-var jobtab = false;
-// function addjob(jobType) {
-//     if(jobtab == false) {
-//         addtab("jobs");
-//         const element = document.createElement("span");
-//         element.innerHTML = `assigned 0/${population.amount}`;
-//         element.id = "asPop"
-//         getId("jobs content").appendChild(element);
-//         getId(element.id).classList.add("large");
-//         jobtab = true;
-//     }
-//     if(jobType.uipresent == false) {
-//         createJobUi(jobType);
-//         jobType.uipresent = true;
-//     }
-//     var curjob = getId(jobType.name);
-//     curjob.querySelector('span').innerHTML = `${jobType.active}/${jobType.max}`;
-// }
-var asAmount = 0
-function updateAssigned(amount,op) {
-    var asPop = getId("asPop");
-    asAmount = operations[op](asAmount,amount);
-    asPop.innerHTML = `assigned ${asAmount}/${population.amount}`;
-}
-function createJobUi(job) {
-    const curjob = document.createElement("div");
-    curjob.id = job.name;
-    curjob.innerHTML = `<div class="jobText">${job.name}</div><button id="${job.name}As">assign</button><span>0/1</span><button id="${job.name}UnAs">unassign</button>`;
-    getId("jobs content").appendChild(curjob);
-    getId(curjob.id).onmouseover = function() {editTooltip('job',job)};
-    getId(`${job.name}As`).onclick = function() {changeProdAndComp(job,"+")};
-    getId(`${job.name}UnAs`).onclick = function() {changeProdAndComp(job,"-")};
-    getId(`${job.name}As`).classList.add("jobButton");
-    getId(`${job.name}UnAs`).classList.add("jobButton"); 
-}
-//------------------------------------------------------------------------------------------------------------------------
-import { farm,lumberjackHut,quarry,library,simpleHut,mine,coalMine,smeltery,wharehouse,sawmill,building } from "./JSfiles/buildings.js";
-const buildingArray = [farm,lumberjackHut,quarry,library,simpleHut,mine,coalMine,smeltery,wharehouse,sawmill];
-var researchUlocked = false;
-function changeBuildingAmount(building,op) {
-    if(building.amount != 0 || op == "+") {
-        if(op == "+") {
-            if(checkCost(building.cost.resource,building.cost.cost) != 1) { return };
-        }
-        building.amount = operations[op](building.amount,1);
-        if(building.job.type[0] != "none") {
-            for(var i = 0; i < building.job.type.length; i++) {
-                building.job.type[i].max = operations[op](building.job.type[i].max,1);
-                job.add(building.job.type[i]);
-            }
-        }
-        if(building.storage.type[0] != "none") {
-            for(var s = 0; s < building.storage.type.length; s++) {
-                var storeRes = building.storage.type[s];
-                if (storeRes.unlocked == true) {
-                    storeRes.storageLimit = operations[op](storeRes.storageLimit,building.storage.amount[s]);
-                    getId(`${storeRes.name}Max`).innerHTML = `/${storeRes.storageLimit}`;
-                }
-            }
-        }
-        if(building.modifier.type[0] != "none") {
-            changeModifier(building.modifier.type,building.modifier.multiplier,op);
-        }
-        for(var j = 0; j < building.cost.cost.length; j++) {
-            switch(op){ 
-                case"+": var costOp = "*"; break; 
-                case"-": var costOp = ":"
-                building.cost.resource[j].amount += building.cost.cost[j]*0.75 ; break; 
-            }
-            building.cost.cost[j] = Math.round((operations[costOp](building.cost.cost[j],building.cost.multiplier))*10) / 10;
-        }
-        getId(`${building.name}Count`).innerHTML = `${building.amount}`;
-        editTooltip("building",building);
-        if(building == library && researchUlocked == false ) {
-            createResearchLab();
-            researchUlocked = true;
-        }  
-    }   
-} 
-//-------------------------------------------------------------------------------------------------------------------------------
-import { storage,mining,smelting,ironWorking,trade } from "./JSfiles/research.js"
-function createResearchLab() {
-    addtab("research");
-    createButton(storage);
-    createButton(mining);
-    createButton(trade);
-}
-//------------------------------------------------------------------------------------------------------------------------------
-let job = {
-    type: false, // define job type
-    add: (jobType) => {
-        if(jobtab == false) {
-            addtab("jobs");
-            const element = document.createElement("span");
-            element.innerHTML = `assigned 0/${population.amount}`;
-            element.id = "asPop"
-            getId("jobs content").appendChild(element);
-            getId(element.id).classList.add("large");
-            jobtab = true;
-        }
-        if(jobType.uipresent == false) {
-            createJobUi(jobType);
-            jobType.uipresent = true;
-        }
-        getId(jobType.name).querySelector('span').innerHTML = `${jobType.active}/${jobType.max}`;
-    },
-};
-//--------------------------------------------------------------------------------------------------------------------------------
-function marketTransaction(curres,op) {
-    var amount = Number(getId("marketInput").value);
-    if(op == "+") {
-        if(gold.amount >= (curres.cost*amount)) {
-            curres.amount += amount;
-            gold.amount -= (curres.cost*amount);
-            console.log(curres.amount)
-        }
-    } else if(op == "-") {
-        if(curres.amount >= amount) {
-            curres.amount -= amount;
-            gold.amount += ((curres.cost*amount)*0.8);
-            console.log(amount)
-        }
-    }
-    amount = 0
-}
-export { marketTransaction }
+import { resources } from "./JSfiles/resources.js"
+import { jobs } from "./JSfiles/jobs.js"
+import { buildings,building } from "./JSfiles/buildings.js"; 
 //----------------------------------------------------------------------------------------------------------------------------------
-function miscellaneous(name,id,CType,CAmount,explanation) {
-    this.name = name;
-    this.id = id;
-    this.cost = {
-        type:CType,
-        amount:CAmount,
-    }
-    this.explanation = explanation;
+const market = {
+    unlocked: false,
+    amount: 0,
+    create: () => {
+        addtab("market");
+        var input = document.createElement("input");
+        input.type = "number";
+        input.id = "marketInput";
+        input.value = 100;
+        getId("market content").appendChild(input);
+        for (const entry of Object.entries(resources)) {
+            var curres = entry[1]
+            if(curres.name != "knowledge" && curres.name != "population" && curres.name != "gold") {
+                if(curres.unlocked == true) {
+                    market.createUI(curres);
+                }
+            } 
+        }
+        market.unlocked = true;
+    },
+    createUI: (curres) => {
+        const curDiv = document.createElement("div");
+        curDiv.id = `${curres.name}`;
+        curDiv.innerHTML = `<div class="marketText">${curres.name}:</div><button id="${curres.name}buy">buy</button><button id="${curres.name}sell">sell</button>`;
+        getId("market content").appendChild(curDiv);
+        getId(`${curres.name}buy`).onclick = function() {market.buy(curres)};
+        getId(`${curres.name}sell`).onclick = function() {market.sell(curres)};
+        getId(`${curres.name}buy`).onmouseover = function() {editTooltip('market buy',curres)};
+        getId(`${curres.name}sell`).onmouseover = function() {editTooltip('market sell',curres)};
+        getId(`${curres.name}buy`).classList.add("marketButton");
+        getId(`${curres.name}sell`).classList.add("marketButton");
+    },
+    buy: (curres) => {
+        market.amount = Number(getId("marketInput").value)
+        if(resources.gold.amount >= (curres.cost*market.amount)) {
+            curres.amount += market.amount;
+            resources.gold.amount -= (curres.cost*market.amount);
+        }
+    },
+    sell: (curres) => {
+        market.amount = Number(getId("marketInput").value)
+        if(curres.amount >= market.amount) {
+            curres.amount -= market.amount;
+            resources.gold.amount += ((curres.cost*market.amount)*0.8);
+        } 
+    },
 }
-const workshop = new miscellaneous("workshop",0,[resources.wood,resources.stone],[300,200],"unlocks upgrades to improve production");
-const researchLab = new miscellaneous("research lab",1,[resources.wood,resources.stone],[200,100],"unlocks research to find new means of production");
-const market = new miscellaneous("market",2,[resources.wood,resources.stone],[250,400],"allows for buying and selling of resources");
-const miscellaneousArray = [workshop,researchLab,market];
-//--------------------------------------------------------------------------------------------------------------------------------
+export { market }
+//----------------------------------------------------------------------------------------------------------------------------------
 function checkCost(resType,resAmount) {
     for(var i = 0; i < resType.length; i++) {
         if(resType[i].amount < resAmount[i]) {
@@ -178,7 +66,7 @@ function checkCost(resType,resAmount) {
     return 1;
 }
 function changeProdAndComp(jobType,op) {
-    if(asAmount != population.amount || op == "-") {
+    if(jobs.func.assigned != resources.population.amount || op == "-") {
         if(jobType.max != jobType.active || op == "-") {
             if(jobType.active != 0 || op == "+") {
                 for(var c = 0; c < jobType.production.type.length; c++) {
@@ -194,9 +82,8 @@ function changeProdAndComp(jobType,op) {
                     }          
                 }
                 jobType.active = operations[op](jobType.active,1)
-                var curjob = getId(jobType.name);
-                curjob.querySelector('span').innerHTML = `${jobType.active}/${jobType.max}`;
-                updateAssigned(1,op); 
+                getId(jobType.name).querySelector('span').innerHTML = `${jobType.active}/${jobType.max}`;
+                jobs.func.updateAssigned(1,op); 
             }  
         }
     }  
@@ -216,7 +103,7 @@ function changeModifier(modType,modAmount,op) {
     }
 }
 function addProdAndComp(id,prodres,prodAmount,compres,compAmount) {
-    var jobType = jobArray[id];
+    var jobType = Object.entries(jobs)[id][1]
     if(prodres != "none") {
         jobType.production.type.push(prodres);
         jobType.production.amount.push(prodAmount);
@@ -295,7 +182,7 @@ function costEdit(costType,costAmount) {
     var text = "cost: ";
     if(costType.length > 1) {
         for(var i = 0; i < costType.length; i++) {
-            text += `${costAmount[i]} ${costType[i].name}`;
+            text += `${costAmount[i]} ${costType[i].name} `;
         } 
     } else {
         text += `${costAmount} ${costType[0].name}`;
@@ -306,8 +193,8 @@ function costEdit(costType,costAmount) {
 export { editTooltip }
 //---------------------------------------------------------------------------------------------------------------------------------
 function autoProduction() {
-    for(var i = 0; i < resourceArray.length; i++) { 
-        var curres = resourceArray[i];
+    for (const entry of Object.entries(resources)) {
+        var curres = entry[1];
         if(curres.unlocked == true) {
             if(curres.production != "none") {
                 curres.amount += curres.endProd(); 
@@ -322,19 +209,18 @@ function autoProduction() {
     checkNegative();
 }
 function checkNegative() {
-    for(var n = 0; n < resourceArray.length; n++) {
-        var negres = resourceArray[n];
+    for (const entry of Object.entries(resources)) {
+        var negres = entry[1];
         if (negres.amount < 0) {
             setInactive(negres);
         } 
     }
 }
 function setInactive(negres) {
-    for(var b = 0; b < jobArray.length; b++) {
-        var jobType = jobArray[b];
+    for(const entry of Object.entries(jobs)) {
+        var jobType = entry[1];
         for(var i = 0; i < jobType.comsumption.type.length; i++) {
-            var res = jobType.comsumption.type[i];
-            if(res != "none" && negres == res) {
+            if(jobType.comsumption.type[i] != "none" && negres == res) {
                 for(var i = 0; i < jobType.comsumption.type.length; i++) {
                     res = jobType.comsumption.type[i];
                     res.comsumption = res.comsumption - (jobType.comsumption.amount[i] * jobType.active);
@@ -345,36 +231,35 @@ function setInactive(negres) {
                     res.production = res.production - (jobType.production.amount * jobType.active);
                     updateProd(res);
                 }
-                updateAssigned(jobType.active,"-")
+                jobs.func.updateAssigned(jobType.active,"-")
                 jobType.active = 0;
-                curjob = getId(jobType.name);
-                curjob.querySelector('span').innerHTML = `${jobType.active}/${jobType.max}`;
+                getId(jobType.name).querySelector('span').innerHTML = `${jobType.active}/${jobType.max}`;
                 break;
             }
         } 
     }
 }
 function populationCheck() {
-    if(population.storageLimit != population.amount && food.amount > 0) {
-        population.amount += 1;
-        food.comsumption += 0.1;
+    if(resources.population.storageLimit != resources.population.amount && resources.food.amount > 0) {
+        resources.population.amount += 1;
+        resources.food.comsumption += 0.1;
         getId(`${population.name}Amount`).innerHTML = population.amount;
-    } else if(food.amount < 0 && population.amount != 0) {
-        population.amount -= 1;
-        food.comsumption -= 0.1;
-        getyId(`${population.name}Amount`).innerHTML = population.amount;
+    } else if(resources.food.amount < 0 && resources.population.amount != 0) {
+        resources.population.amount -= 1;
+        resources.food.comsumption -= 0.1;
+        getyId(`${resources.population.name}Amount`).innerHTML = resources.population.amount;
     }
-    if(jobtab == true) {
-        updateAssigned(0,"+");
+    if(jobs.func.tab == true) {
+        jobs.func.updateAssigned(0,"+");
     }
-    updateProd(food);
+    updateProd(resources.food);
 }
 setInterval(function(){autoProduction();},100);
 setInterval(function(){populationCheck();},10000);
 //----------------------------------------------------------------------------------------------------------------------------------
 window.cheatTest = function(op) {
-    for(var i = 0; i < resourceArray.length; i++) {
-        var curres = resourceArray[i];
+    for(const entry of Object.entries(resources)) {
+        var curres = entry[1];
         if(curres.unlocked == true) {
             if(op == "+") {
                 curres.amount = curres.storageLimit;
@@ -404,6 +289,7 @@ var operations = {
     "*": function(a,b) { return a * b},
     ":": function(a,b) { return a / b},
 }
+export { operations }
 //-----------------------------------------------------------------------------------------------------------------------------------
 function removeElement(id) { getId(id).remove(); };
 function addtab(tabName) {
@@ -455,14 +341,14 @@ for(var i = 0; i < 5 ; i++) {
     addOnclickForBuilding(i)
 }
 function addOnclickForClickResouces(i) {
-    var curRes = resourceArray[i];
-    getId(`${curRes.name}Gather`).addEventListener("click",function() {clickresource(curRes)});
+    var curRes = Object.entries(resources)[i][1]
+    getId(`${curRes.name}Gather`).addEventListener("click",function() {resources.func.click(curRes)});
     getId(`${curRes.name}Gather`).addEventListener("mouseover",function() {editTooltip("gather",curRes)});
 }
 function addOnclickForBuilding(i) {
-    var curBuilding = buildingArray[i]
+    var curBuilding = Object.entries(buildings)[i][1]
     getId(`${curBuilding.name}`).addEventListener("mouseover",function(){editTooltip("building",curBuilding)})
-    getId(`${curBuilding.name}Buy`).addEventListener("click",function(){changeBuildingAmount(curBuilding,"+")})
-    getId(`${curBuilding.name}Sell`).addEventListener("click",function(){changeBuildingAmount(curBuilding,"-")})
+    getId(`${curBuilding.name}Buy`).addEventListener("click",function(){buildings.func.changeBuildingAmount(curBuilding,"+")})
+    getId(`${curBuilding.name}Sell`).addEventListener("click",function(){buildings.func.changeBuildingAmount(curBuilding,"-")})
 }
 //----------------------------------------------------------------------------------------------------------------------------------------
