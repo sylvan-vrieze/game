@@ -14,10 +14,16 @@ function upgrade(name,id,explanation,MType,MAmount,CType,CAmount,effect) {
     }
     this.effect = effect;
 }
-const strongerAxe = new upgrade("Stronger Axe",0,"Stronger axes allow for faster cutting",[resources.wood],[0.20],[resources.copperIngot],[50],function(){if(checkCost([resources.copperIngot],[50]) == 1) {changeModifier([resources.wood],[0.20],"+");removeElement("Stronger Axe")}});
-const basicWeapons = new upgrade("basic weapons",1,"Basic weapons allow for hunting and warfare",["none"],["none"],[resources.copperIngot],[125],function(){if(checkCost([resources.copperIngot],[125]) == 1) {createWarvareTab()}});
-function createWarvareTab() {
-    addtab("warfare");
-    removeElement("basic weapons");
+const upgrades = {
+    strongerAxe: new upgrade("Stronger Axe",0,"Stronger axes allow for faster cutting",[resources.wood],[0.20],[resources.copperIngot],[50],function(){if(checkCost([resources.copperIngot],[50]) == 1) {changeModifier([resources.wood],[0.20],"+");removeElement("Stronger Axe")}}),
+    basicWeapons: new upgrade("basic weapons",1,"Basic weapons allow for hunting and warfare",["none"],["none"],[resources.copperIngot],[125],function(){if(checkCost([resources.copperIngot],[125]) == 1) {upgrades.func.createWarvareTab()}}),
+    func: {
+        createWarvareTab: () => {
+            addtab("warfare");
+            removeElement("basic weapons");
+        }
+    }
 }
-export { strongerAxe,basicWeapons };
+
+
+export { upgrades };

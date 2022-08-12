@@ -1,3 +1,4 @@
+import { getId } from "../main.js";
 function resource(id,name,amount,production,comsumption,storageLimit,modifier,unlocked,cost) {
     this.id = id;
     this.name = name;
@@ -24,7 +25,26 @@ const resources = {
     ironOre: new resource(8,"iron ore",0,0,0,500,1,false,0.002),
     ironIngot: new resource(9,"iron ingot",0,0,0,250,1,false,0.0045),
     gold: new resource(10,"gold",0,0,0,100,1,false,0),
+    func: {
+        click: (res) => { res.amount += 1 },
+        createUI: (res) => {
+            var resUiArray = [["Name",`${res.name}:`],["Amount","0"],["Max",`/${res.storageLimit}`],["Prod",`+0/s`]];
+            var resImg = document.createElement('img')
+            resImg.src = `images/resources/${res.name}.png`
+            getId("resImage").appendChild(resImg)
+            resImg.classList.add("resImage")
+            for(var i = 0; i < resUiArray.length; i++) {
+                var resUi = document.createElement('div');
+                resUi.id = `${res.name}${resUiArray[i][0]}`;
+                resUi.innerHTML = `${resUiArray[i][1]}`;
+                getId(`res${resUiArray[i][0]}`).appendChild(resUi);
+                getId(`${res.name}${resUiArray[i][0]}`).classList.add(`res${resUiArray[i][0]}`);
+            }
+            if(res.name != "gold" && market.unlocked == true) {
+                market.createUI(res);
+            }
+            res.unlocked = true ;
+        }
+    },
 }
-
-//var resourceArray = [food,wood,stone,copperOre,coal,copperIngot,knowledge,population,ironOre,ironIngot,gold];
 export { resources }
