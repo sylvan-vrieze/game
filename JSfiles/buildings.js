@@ -1,16 +1,16 @@
-import { func,changeModifier,editTooltip,addtab,createButton } from "../main.js";
+import { func,changeModifier } from "../main.js";
 import { resources } from "./resources.js";
 import { jobs } from "./jobs.js";
 import { researches } from "./research.js";
-function building(name,id,type,amount,cost,costmultiplier,resourceCost,jobType,jobAmount,Stype,SAmount,Mtype,Mmultiplier) {
+function building(name,id,type,amount,Camount,resourceCost,costmultiplier,jobType,jobAmount,Stype,SAmount,Mtype,MAmount) {
     this.name = name;
     this.id = id;
     this.type = type;
     this.amount = amount;
     this.cost = {
-        cost:cost,
-        multiplier:costmultiplier,
+        amount:Camount,
         resource:resourceCost,
+        multiplier:costmultiplier, 
     }
     this.job = {
         type:jobType,
@@ -22,26 +22,28 @@ function building(name,id,type,amount,cost,costmultiplier,resourceCost,jobType,j
     }
     this.modifier = {
         type:Mtype,
-        multiplier:Mmultiplier,
+        amount:MAmount,
     }
 }
 const buildings = {
-    farm: new building("farm",0,"production",0,[5],1.2,[resources.wood],[jobs.farmer],[1],["none"],[0],["none"],[0]),
-    lumberjackHut: new building("lumberjack hut",1,"production",0,[10],1.2,[resources.wood],[jobs.lumberjack],[1],["none"],[0],["none"],[0]),
-    quarry: new building("quarry",2,"production",0,[10],1.2,[resources.wood],[jobs.qaurryworker],[1],["none"],[0],["none"],[0]),
-    library: new building("library",3,"storage",0,[50,25],1.4,[resources.wood,resources.stone],[jobs.librarian],[1],[resources.knowledge],[100],[resources.knowledge],[0.2]),
-    simpleHut: new building("simple hut",4,"housing",0,[15,5],1.2,[resources.wood,resources.stone],["none"],[0],[resources.population],[5],["none"],[0]),
-    mine: new building("mine",5,"production",0,[15,10],1.2,[resources.wood,resources.stone],[jobs.miner],[1],["none"],[0],["none"],[0]),
-    coalMine: new building("coal mine",6,"production",0,[15,10],1.2,[resources.wood,resources.stone],[jobs.coalminer],[1],["none"],[0],["none"],[0]),
-    smeltery: new building("smeltery",7,"production",0,[10,30],1.3,[resources.wood,resources.stone],[jobs.smelter],[1],["none"],[0],["none"],[0]),
-    wharehouse: new building("wharehouse",8,"storage",0,[40,40],1.4,[resources.wood,resources.stone],["none"],[0],[resources.food,resources.wood,resources.stone,resources.copperOre,resources.coal,resources.copperIngot,resources.ironOre,resources.ironIngot,resources.gold],[500,500,500,500,500,250,500,250,100],["none"],[0]),
-    sawmill: new building("sawmill",9,"production",0,[10],1.2,[resources.wood],["none"],[0],["none"],[0],[resources.wood],[0.2]),
+    farm: new building("farm",0,"production",0,[5],[resources.wood],1.2,[jobs.farmer],[1],["none"],[0],["none"],[0]),
+    lumberjackHut: new building("lumberjack hut",1,"production",0,[10],[resources.wood],1.2,[jobs.lumberjack],[1],["none"],[0],["none"],[0]),
+    quarry: new building("quarry",2,"production",0,[10],[resources.wood],1.2,[jobs.qaurryworker],[1],["none"],[0],["none"],[0]),
+    library: new building("library",3,"storage",0,[50,25],[resources.wood,resources.stone],1.4,[jobs.librarian],[1],[resources.knowledge],[100],[resources.knowledge],[0.2]),
+    simpleHut: new building("simple hut",4,"housing",0,[15,5],[resources.wood,resources.stone],1.3,["none"],[0],[resources.population],[5],["none"],[0]),
+    mine: new building("mine",5,"production",0,[15,10],[resources.wood,resources.stone],1.2,[jobs.miner,jobs.coalminer],[1,1],["none"],[0],["none"],[0]),
+    smeltery: new building("smeltery",6,"production",0,[10,30],[resources.wood,resources.stone],1.3,[jobs.smelter],[1],["none"],[0],["none"],[0]),
+    wharehouse: new building("wharehouse",7,"storage",0,[40,40],[resources.wood,resources.stone],1.4,["none"],[0],[resources.food,resources.wood,resources.stone,resources.copperOre,resources.coal,resources.copperIngot,resources.ironOre,resources.ironIngot,resources.gold],[500,500,500,500,500,250,500,250,100],["none"],[0]),
+    sawmill: new building("sawmill",8,"production",0,[100,10],[resources.wood,resources.ironIngot],1.4,["none"],[0],["none"],[0],[resources.wood],[0.1]),
+    charcoalKiln: new building("charcoal kiln",9,"production",0,[25,75],[resources.wood,resources.stone],1.3,[jobs.charcoalMaker],[1],["none"],[0],["none"],[0]),
+    windmill: new building("windmill",10,"production",0,[125,50],[resources.wood,resources.stone],1.3,["none"],[0],["none"],[0],[resources.food],[0.10]),
+    huntersLodge: new building("hunters lodge",11,"production",0,[75,],[resources.wood,],1.3,[jobs.hunter],[1],[resources.fur],[100],["none"],[0]),
     func: {
         researchUlocked: false,
-        changeBuildingAmount: (building,op) => {
+        changeAmount: (building,op) => {
             if(building.amount != 0 || op == "+") {
                 if(op == "+") {
-                    if(func.checkCost(building.cost.resource,building.cost.cost) != 1) { return };
+                    if(func.checkCost(building.cost.resource,building.cost.amount) != 1) { return };
                 }
                 building.amount = func.operations[op](building.amount,1);
                 if(building.job.type[0] != "none") {
@@ -60,26 +62,26 @@ const buildings = {
                     }
                 }
                 if(building.modifier.type[0] != "none") {
-                    changeModifier(building.modifier.type,building.modifier.multiplier,op);
+                    changeModifier(building.modifier.type,building.modifier.amount,op);
                 }
-                for(var i = 0; i < building.cost.cost.length; i++) {
+                for(var i = 0; i < building.cost.amount.length; i++) {
                     switch(op){ 
                         case"+": var costOp = "*"; break; 
-                        case"-": var costOp = ":"; building.cost.resource[i].amount += building.cost.cost[i]*0.75 ; break; 
+                        case"-": var costOp = ":"; building.cost.resource[i].amount += building.cost.amount[i]*0.75 ; break; 
                     }
-                    building.cost.cost[i] = Math.round((func.operations[costOp](building.cost.cost[i],building.cost.multiplier))*10) / 10;
+                    building.cost.amount[i] = Math.round((func.operations[costOp](building.cost.amount[i],building.cost.multiplier))*10) / 10;
                 }
                 func.getId(`${building.name}Count`).innerHTML = `${building.amount}`;
-                editTooltip("building",building);
+                func.tooltip.edit("building",building);
                 if(building == buildings.library && buildings.func.researchUlocked == false ) {
-                    addtab("research");
-                    createButton(researches.storage);
-                    createButton(researches.mining);
-                    createButton(researches.trade);
+                    func.create.tab("research");
+                    func.create.button(researches.storage);
+                    func.create.button(researches.mining);
+                    func.create.button(researches.trade);
                     buildings.func.researchUlocked = true;
                 }  
             }   
         },
     }
 }
-export { buildings,building };
+export { buildings };

@@ -1,5 +1,7 @@
 import { resources } from "./resources.js";
-import { func,changeModifier,removeElement,addtab } from "../main.js";
+import { buildings } from "./buildings.js";
+import { func,changeModifier } from "../main.js";
+import { warfare } from "./warfare.js";
 function upgrade(name,id,explanation,MType,MAmount,CType,CAmount,effect) {
     this.name = name;
     this.id = id;
@@ -15,15 +17,24 @@ function upgrade(name,id,explanation,MType,MAmount,CType,CAmount,effect) {
     this.effect = effect;
 }
 const upgrades = {
-    strongerAxe: new upgrade("Stronger Axe",0,"Stronger axes allow for faster cutting",[resources.wood],[0.20],[resources.copperIngot],[50],function(){if(func.checkCost([resources.copperIngot],[50]) == 1) {changeModifier([resources.wood],[0.20],"+");removeElement("Stronger Axe")}}),
-    basicWeapons: new upgrade("basic weapons",1,"Basic weapons allow for hunting and warfare",["none"],["none"],[resources.copperIngot],[125],function(){if(func.checkCost([resources.copperIngot],[125]) == 1) {upgrades.func.createWarvareTab()}}),
+    copperAxe: new upgrade("copper axe",0,"Stronger axes allow for faster cutting",[resources.wood],[0.20],[resources.copperIngot],[50],function(){if(func.checkCost([resources.copperIngot],[50]) == 1) {changeModifier([resources.wood],[0.20],"+");func.removeElement("copper axe")}}),
+    copperHoe: new upgrade("copper hoe",1,"",[resources.food],[0.20],[resources.copperIngot],[40],function(){if(func.checkCost([resources.copperIngot],[50]) == 1) {changeModifier([resources.food],[0.20],"+");func.removeElement("copper hoe")}}),
+    basicWeapons: new upgrade("basic weapons",2,"Basic weapons allow for hunting and warfare",["none"],["none"],[resources.copperIngot],[125],function(){if(func.checkCost([resources.copperIngot],[125]) == 1) {upgrades.func.createWarvareTab(); func.create.button(buildings.huntersLodge); resources.func.createUI(resources.fur); func.removeElement("basic weapons");}}),
     func: {
         createWarvareTab: () => {
-            addtab("warfare");
-            removeElement("basic weapons");
+            func.create.tab("warfare");
+            const armytab = document.createElement("div")
+            armytab.id = "amry" 
+            armytab.classList.add("section")
+            func.getId("warfare content").appendChild(armytab)
+            
+        //--------------------------------------------------------------
+            const nationtab = document.createElement("div")
+            nationtab.id = "nations"
+            nationtab.classList.add("section")
+            func.getId("warfare content").appendChild(nationtab)
+            warfare.func.createNation(warfare.nations.nation1)
         }
     }
 }
-
-
 export { upgrades };

@@ -1,5 +1,5 @@
 import { resources } from "./resources.js"
-import { func,addtab,editTooltip,changeProdAndComp } from "../main.js";
+import { func,changeProdAndComp } from "../main.js";
 function job(id,name,active,max,prodType,prodAmount,compType,compAmount,uipresent) {
     this.id = id;
     this.name = name;
@@ -21,8 +21,10 @@ const jobs = {
     miner: new job(2,"miner",0,0,[resources.copperOre],[0.1],["none"],[0],false),
     coalminer: new job(3,"coalminer",0,0,[resources.coal],[0.1],["none"],[0],false),
     smelter: new job(4,"smelter",0,0,[resources.copperIngot],[0.01],[resources.copperOre,resources.coal],[0.2,0.3],false),
-    farmer: new job(5,"farmer",0,0,[resources.food],[0.2],["none"],[0],false), 
+    farmer: new job(5,"farmer",0,0,[resources.food],[0.125],["none"],[0],false), 
     librarian: new job(6,"librarian",0,0,[resources.knowledge],[0.02],["none"],[0],false),
+    charcoalMaker: new job(7,"charcoal maker",0,0,[resources.coal],[0.1],[resources.wood],[0.2],false),
+    hunter: new job(8,"hunter",0,0,[resources.food,resources.fur],[0.11,0.025],["none"],[0],false),
     func: {
         tab: false,
         assigned: 0,
@@ -36,7 +38,7 @@ const jobs = {
             curjob.id = jobType.name;
             curjob.innerHTML = `<div class="jobText">${jobType.name}</div><button id="${jobType.name}As">assign</button><span>0/1</span><button id="${jobType.name}UnAs">unassign</button>`;
             func.getId("jobs content").appendChild(curjob);
-            func.getId(curjob.id).onmouseover = function() {editTooltip('job',jobType)};
+            func.getId(curjob.id).onmouseover = function() {func.tooltip.edit('job',jobType)};
             func.getId(`${jobType.name}As`).onclick = function() {changeProdAndComp(jobType,"+")};
             func.getId(`${jobType.name}UnAs`).onclick = function() {changeProdAndComp(jobType,"-")};
             func.getId(`${jobType.name}As`).classList.add("jobButton");
@@ -44,7 +46,7 @@ const jobs = {
         },
         add: (jobType) => {
             if(jobs.func.tab == false) {
-                addtab("jobs");
+                func.create.tab("jobs");
                 const element = document.createElement("span");
                 element.innerHTML = `assigned 0/${resources.population.amount}`;
                 element.id = "asPop"
