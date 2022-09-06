@@ -60,6 +60,7 @@
   -ms-user-select: none;
   user-select: none;
 }
+/*-------------------------------------------------------------------------------------------------------------------------------------*/
 .buildingButton {
   border: 2px solid #e7e7e7;
   margin: 4px;
@@ -80,35 +81,43 @@
   -ms-user-select: none;
   user-select: none;
 }
-.buildingButton .buildingText {
-  position: relative;
-  top: 4px;
+  .buildingButton .buildingText {
+    position: relative;
+    top: 4px;
+  }
+  .buildingButton .buildingBuy {
+    background-color: inherit;
+    height: inherit;
+  }
+  .buildingButton .buildingCount {
+    position: relative;
+    width: 15px;
+    bottom: 33px;
+    right: 2px;
+    border: 2px solid #e7e7e7;
+    border-radius: inherit;
+    padding: 1px;
+  }
+  .buildingButton .buildingSell {
+    height: 23px;
+    background: inherit;
+    border: inherit;
+    border-radius: inherit;
+    width: 29px;
+    position: relative;
+    bottom: 57px;
+    padding: 4px;
+    left: 129px;
+  }
+  .buildingSell:hover {
+    background-color: #e7e7e7;
+    transition: 0.25s;
+  }
+  .buildingBuy:hover {
+    background-color: #e7e7e7;
+    transition: 0.25s;
 }
-.buildingButton .buildingBuy {
-  background-color: inherit;
-  height: inherit;
-}
-.buildingButton .buildingCount {
-  background-color: #f1f0f0;
-  position: relative;
-  width: 15px;
-  bottom: 33px;
-  right: 2px;
-  border: 2px solid #e7e7e7;
-  border-radius: inherit;
-  padding: 1px;
-}
-.buildingButton .buildingSell {
-  height: 23px;
-  background: inherit;
-  border: inherit;
-  border-radius: inherit;
-  width: 29px;
-  position: relative;
-  bottom: 57px;
-  padding: 4px;
-  left: 129px;
-}
+/*----------------------------------------------------------------------------------------------------------------------------------------------*/
 .jobButton {
   padding: 4px;
   border: 2px solid #e7e7e7;
@@ -143,6 +152,7 @@
 .tooltip {
     position: relative;
     display: inline-block;
+    width: 100%;
   }
   /* Tooltip text */
   .tooltip .tooltiptext {
@@ -154,7 +164,7 @@
     padding: 8px 0;
     border-radius: 6px;
     position: absolute;
-    margin-left: 19rem;
+    margin-left: 35rem;
     z-index: 1;
   }
   /* Show the tooltip text when you mouse over the tooltip container */
@@ -197,6 +207,7 @@
   padding: 6px 12px;
   border: 1px solid #ccc;
   border: none;
+  width: 100%;
 }
 /*-------------------------------------------------------*/
 .large {
@@ -204,4 +215,13 @@
 }
 .picture {
   width: 40%;
+}
+/*-------------------------------------------------------*/
+.section {
+  display: inline-block;
+  width: 50%;
+}
+.nationText {
+  margin: 3px;
+  margin-left: 0px;
 }
