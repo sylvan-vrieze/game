@@ -24,16 +24,25 @@ const upgrades = {
         createWarvareTab: () => {
             func.create.tab("warfare");
             const armytab = document.createElement("div")
-            armytab.id = "amry" 
+            armytab.id = "army" 
             armytab.classList.add("section")
             func.getId("warfare content").appendChild(armytab)
             
+            const armytext = document.createElement("div")
+            armytext.id = "armytext" 
+            armytext.innerHTML = "army"
+            func.getId("army").appendChild(armytext)
+            
+            warfare.func.createUnit(warfare.units.warrior)
+            warfare.func.createUnit(warfare.units.archer)
         //--------------------------------------------------------------
             const nationtab = document.createElement("div")
             nationtab.id = "nations"
             nationtab.classList.add("section")
             func.getId("warfare content").appendChild(nationtab)
             warfare.func.createNation(warfare.nations.nation1)
+            warfare.func.createNation(warfare.nations.nation2)
+            warfare.func.createNation(warfare.nations.nation3)
         }
     }
 }

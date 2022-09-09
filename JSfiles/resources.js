@@ -42,7 +42,7 @@ const resources = {
                 resUi.id = `${res.name}${resUiArray[i][0]}`;
                 resUi.innerHTML = `${resUiArray[i][1]}`;
                 func.getId(`res${resUiArray[i][0]}`).appendChild(resUi);
-                func.getId(`${res.name}${resUiArray[i][0]}`).classList.add(`res${resUiArray[i][0]}`);
+                func.addClass(`${res.name}${resUiArray[i][0]}`,`res${resUiArray[i][0]}`);
             }
             if(res.name != "gold" && market.unlocked == true) {
                 market.createUI(res);

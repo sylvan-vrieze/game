@@ -41,8 +41,8 @@ const jobs = {
             func.getId(curjob.id).onmouseover = function() {func.tooltip.edit('job',jobType)};
             func.getId(`${jobType.name}As`).onclick = function() {changeProdAndComp(jobType,"+")};
             func.getId(`${jobType.name}UnAs`).onclick = function() {changeProdAndComp(jobType,"-")};
-            func.getId(`${jobType.name}As`).classList.add("jobButton");
-            func.getId(`${jobType.name}UnAs`).classList.add("jobButton");
+            func.addClass(`${jobType.name}As`,"jobButton");
+            func.addClass(`${jobType.name}UnAs`,"jobButton");
         },
         add: (jobType) => {
             if(jobs.func.tab == false) {
@@ -51,7 +51,7 @@ const jobs = {
                 element.innerHTML = `assigned 0/${resources.population.amount}`;
                 element.id = "asPop"
                 func.getId("jobs content").appendChild(element);
-                func.getId(element.id).classList.add("large");
+                func.addClass(element.id,"large");
                 jobs.func.tab = true;
             }
             if(jobType.uipresent == false) {
