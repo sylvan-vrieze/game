@@ -218,10 +218,47 @@
 }
 /*-------------------------------------------------------*/
 .section {
-  display: inline-block;
+  display: table-cell;
   width: 50%;
+}
+.nationCard {
+  margin: 6px;
+  margin-left: 0px;
 }
 .nationText {
   margin: 3px;
   margin-left: 0px;
+}
+.unitButton {
+  padding: 4px;
+  border: 2px solid #e7e7e7;
+  margin: 2px;
+  border-radius: 6px;
+  text-align: center;
+  width: 140px;
+  display: inline-block;
+  background-color: #f1f0f0;
+  height: 23px;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  }
+  .unitButton .unitText {
+    height: inherit;
+    position: relative;
+  }
+  .unitButton .unitAmount {
+    height: 24px;
+    position: relative;
+    background: inherit;
+    border: inherit;
+    border-radius: inherit;
+    padding-top: 7px;
+    width: 40px;
+    left: 121px;
+    bottom: 29px;
 }

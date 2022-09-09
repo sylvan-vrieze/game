@@ -1,6 +1,7 @@
 const func = {
     getId: (i) => document.getElementById(i),
     removeElement: (id) => func.getId(id).remove(),
+    addClass: (id,clas) => func.getId(id).classList.add(clas) ,
     checkCost: (resType,resAmount) => {
         for(var i = 0; i < resType.length; i++) {
             if(resType[i].amount < resAmount[i]) {
@@ -30,14 +31,14 @@ const func = {
                 <div class="buildingCount" id="${item.name}Count">0</div>
                 <div class="buildingSell"  id="${item.name}Sell">sell</div>`;
                 func.getId(`${item.type} ${item.constructor.name}`).appendChild(button);
-                func.getId(item.name).classList.add("buildingButton");
+                func.addClass(item.name,"buildingButton")
                 func.getId(`${item.name}Sell`).addEventListener("click",function() {buildings.func.changeAmount(item,'-')});
                 func.getId(`${item.name}Buy`).addEventListener("click",function() {buildings.func.changeAmount(item,'+')});
             } else {
                 button.onclick = function() { item.effect(); }
                 button.innerHTML = item.name
                 func.getId(`${item.constructor.name} content`).appendChild(button);
-                func.getId(item.name).classList.add("button");
+                func.addClass(item.name,"button");
             }
             button.onmouseover = function() {func.tooltip.edit(`${item.constructor.name}`,item)}; 
             
@@ -48,12 +49,12 @@ const func = {
             tab.innerHTML = tabName;
             tab.onclick = function() {openTab(event, `${tabName} content`)};
             func.getId("tab").appendChild(tab);
-            func.getId(tabName).classList.add("tablinks") ;
+            func.addClass(tabName,"tablinks") ;
             
             const tabcontent = document.createElement("div");
             tabcontent.id = `${tabName} content`;
             func.getId("contentlist").appendChild(tabcontent);
-            func.getId(tabcontent.id).classList.add("tabcontent");
+            func.addClass(tabcontent.id,"tabcontent");
         }
     },
     tooltip: {
@@ -170,8 +171,8 @@ const market = {
         func.getId(`${curres.name}sell`).onclick = function() {market.sell(curres)};
         func.getId(`${curres.name}buy`).onmouseover = function() {func.tooltip.edit('market buy',curres)};
         func.getId(`${curres.name}sell`).onmouseover = function() {func.tooltip.edit('market sell',curres)};
-        func.getId(`${curres.name}buy`).classList.add("marketButton");
-        func.getId(`${curres.name}sell`).classList.add("marketButton");
+        func.addClass(`${curres.name}buy`,"marketButton");
+        func.addClass(`${curres.name}sell`,"marketButton");
     },
     buy: (curres) => {
         market.amount = Number(func.getId("marketInput").value)
