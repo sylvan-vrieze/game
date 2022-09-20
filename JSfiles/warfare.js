@@ -62,7 +62,7 @@ const warfare = {
             func.getId(`${curNation.name}`).appendChild(attack)
             func.addClass(`${curNation.name}attack`,"button")
         },
-        createUnit: (curUnit) => {
+        createUnitUI: (curUnit) => {
             const unit = document.createElement("div")
             unit.id = `${curUnit.name}`
             unit.innerHTML = `<div id="${curUnit.name}Text">train ${curUnit.name}</div><div id="${curUnit.name}Amount">0/${curUnit.amount.max}</div>`
@@ -73,9 +73,11 @@ const warfare = {
             func.getId(`${curUnit.name}`).addEventListener("click",function(){warfare.func.trainUnit(curUnit)})
         },
         trainUnit: (unit) => {
-            if(func.checkCost(unit.cost.resource,unit.cost.amount) == 1) {
-                unit.amount.current += 1
-                func.getId(`${unit.name}Amount`).innerHTML = `${unit.amount.current}/${unit.amount.max}`
+            if(unit.amount.current == unit.amount.max) {
+                if(func.checkCost(unit.cost.resource,unit.cost.amount) == 1) {
+                    unit.amount.current += 1
+                    func.getId(`${unit.name}Amount`).innerHTML = `${unit.amount.current}/${unit.amount.max}`
+                }
             }
         }
     },

@@ -36,13 +36,15 @@ const jobs = {
         createUi: (jobType) => {
             const curjob = document.createElement("div");
             curjob.id = jobType.name;
-            curjob.innerHTML = `<div class="jobText">${jobType.name}</div><button id="${jobType.name}As">assign</button><span>0/1</span><button id="${jobType.name}UnAs">unassign</button>`;
+            curjob.innerHTML = `<div class="jobText">${jobType.name}</div><button id="${jobType.name}As">assign</button>
+                <div id="${jobType.name}Number" style="display: inline-block;">0/1</div><button id="${jobType.name}UnAs">unassign</button>`;
             func.getId("jobs content").appendChild(curjob);
-            func.getId(curjob.id).onmouseover = function() {func.tooltip.edit('job',jobType)};
-            func.getId(`${jobType.name}As`).onclick = function() {changeProdAndComp(jobType,"+")};
-            func.getId(`${jobType.name}UnAs`).onclick = function() {changeProdAndComp(jobType,"-")};
+            func.getId(curjob.id).onmouseover = () => func.tooltip.edit('job',jobType);
+            func.getId(`${jobType.name}As`).onclick = () => changeProdAndComp(jobType,"+");
+            func.getId(`${jobType.name}UnAs`).onclick = () => changeProdAndComp(jobType,"-");
             func.addClass(`${jobType.name}As`,"jobButton");
             func.addClass(`${jobType.name}UnAs`,"jobButton");
+            jobType.uipresent = true;
         },
         add: (jobType) => {
             if(jobs.func.tab == false) {
@@ -56,9 +58,8 @@ const jobs = {
             }
             if(jobType.uipresent == false) {
                 jobs.func.createUi(jobType);
-                jobType.uipresent = true;
             }
-            func.getId(jobType.name).querySelector('span').innerHTML = `${jobType.active}/${jobType.max}`;
+            func.getId(`${jobType.name}Number`).innerHTML = `${jobType.active}/${jobType.max}`;
         },
     }
 }
