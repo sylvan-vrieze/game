@@ -1,6 +1,6 @@
 const func = {
-    getId: (i) => document.getElementById(i),
-    removeElement: (id) => func.getId(id).remove(),
+    getId: id => document.getElementById(id),
+    removeElement: id => func.getId(id).remove(),
     addClass: (id,clas) => func.getId(id).classList.add(clas) ,
     checkCost: (resType,resAmount) => {
         for(var i = 0; i < resType.length; i++) {
@@ -14,10 +14,10 @@ const func = {
         return 1;
     },
     operations: {
-        "+": function(a,b) { return a + b},
-        "-": function(a,b) { return a - b},
-        "*": function(a,b) { return a * b},
-        ":": function(a,b) { return a / b},
+        "+": (a,b) =>  a + b,
+        "-": (a,b) =>  a - b,
+        "*": (a,b) =>  a * b,
+        ":": (a,b) =>  a / b,
     },
     create: {
         button: (item) => {
@@ -32,22 +32,22 @@ const func = {
                 <div class="buildingSell"  id="${item.name}Sell">sell</div>`;
                 func.getId(`${item.type} ${item.constructor.name}`).appendChild(button);
                 func.addClass(item.name,"buildingButton")
-                func.getId(`${item.name}Sell`).addEventListener("click",function() {buildings.func.changeAmount(item,'-')});
-                func.getId(`${item.name}Buy`).addEventListener("click",function() {buildings.func.changeAmount(item,'+')});
+                func.getId(`${item.name}Sell`).addEventListener("click",() => buildings.func.changeAmount(item,'-'));
+                func.getId(`${item.name}Buy`).addEventListener("click",() => buildings.func.changeAmount(item,'+'));
             } else {
                 button.onclick = function() { item.effect(); }
                 button.innerHTML = item.name
                 func.getId(`${item.constructor.name} content`).appendChild(button);
                 func.addClass(item.name,"button");
             }
-            button.onmouseover = function() {func.tooltip.edit(`${item.constructor.name}`,item)}; 
+            button.onmouseover = () => func.tooltip.edit(`${item.constructor.name}`,item); 
             
         },
         tab: (tabName) => {
             const tab = document.createElement("button");
             tab.id = tabName;
             tab.innerHTML = tabName;
-            tab.onclick = function() {openTab(event, `${tabName} content`)};
+            tab.onclick = () => openTab(event, `${tabName} content`);
             func.getId("tab").appendChild(tab);
             func.addClass(tabName,"tablinks") ;
             
@@ -167,10 +167,10 @@ const market = {
         curDiv.id = `${curres.name}`;
         curDiv.innerHTML = `<div class="marketText">${curres.name}:</div><button id="${curres.name}buy">buy</button><button id="${curres.name}sell">sell</button>`;
         func.getId("market content").appendChild(curDiv);
-        func.getId(`${curres.name}buy`).onclick = function() {market.buy(curres)};
-        func.getId(`${curres.name}sell`).onclick = function() {market.sell(curres)};
-        func.getId(`${curres.name}buy`).onmouseover = function() {func.tooltip.edit('market buy',curres)};
-        func.getId(`${curres.name}sell`).onmouseover = function() {func.tooltip.edit('market sell',curres)};
+        func.getId(`${curres.name}buy`).onclick = () => market.buy(curres);
+        func.getId(`${curres.name}sell`).onclick = () => market.sell(curres);
+        func.getId(`${curres.name}buy`).onmouseover = () => func.tooltip.edit('market buy',curres);
+        func.getId(`${curres.name}sell`).onmouseover = () => func.tooltip.edit('market sell',curres);
         func.addClass(`${curres.name}buy`,"marketButton");
         func.addClass(`${curres.name}sell`,"marketButton");
     },
@@ -179,7 +179,7 @@ const market = {
         if(resources.gold.amount >= (curres.cost.current*market.amount)) {
             curres.amount += market.amount;
             resources.gold.amount -= (curres.cost.current*market.amount);
-            market.changePrice(curres,"+") 
+            market.changePrice(curres,"*") 
         }
     },
     sell: (curres) => {
@@ -187,52 +187,45 @@ const market = {
         if(curres.amount >= market.amount) {
             curres.amount -= market.amount;
             resources.gold.amount += ((curres.cost.current*market.amount)*0.8);
-            market.changePrice(curres,"-") 
+            market.changePrice(curres,":") 
         }
     },
     changePrice: (curres,op) => {
         var changeMultipler = Math.round((Math.random() * 2)*10)/10
+        curres.cost.current = func.operations[op](curres.cost.current,(1 + ((market.amount / 50000) * changeMultipler)));
         switch (op) {
-            case "+":
-                curres.cost.current = curres.cost.current * (1 + ((market.amount / 50000) * changeMultipler));
-                func.tooltip.edit('market buy',curres); break;
-            case "-":
-                curres.cost.current = curres.cost.current / (1 + ((market.amount / 50000) * changeMultipler));
-                func.tooltip.edit('market sell',curres); break;
+            case "*": func.tooltip.edit('market buy',curres); break;
+            case ":": func.tooltip.edit('market sell',curres); break;
         }
     },
 }
 export { market }
 //----------------------------------------------------------------------------------------------------------------------------------
 function changeProdAndComp(jobType,op) {
-    if(jobs.func.assigned != resources.population.amount || op == "-") {
-        if(jobType.max != jobType.active || op == "-") {
-            if(jobType.active != 0 || op == "+") {
-                for(var c = 0; c < jobType.production.type.length; c++) {
-                    var prodres = jobType.production.type[c];
-                    prodres.production = func.operations[op](prodres.production,jobType.production.amount[c]);
-                    updateProd(prodres);
-                }
-                if(jobType.comsumption.type != "none") {
-                    for(var c = 0; c < jobType.comsumption.type.length; c++) {
-                        var compres = jobType.comsumption.type[c];
-                        compres.comsumption = func.operations[op](compres.comsumption,jobType.comsumption.amount[c]);
-                        updateProd(compres);  
+    if(jobs.func.assigned != resources.population.amount && jobType.max != jobType.active || op == "-") {
+        if(jobType.active != 0 || op == "+") {
+            let part = ["production","comsumption"]
+            for(let i = 0; i < 2; i++) {
+                if(jobType[part[i]].type != "none") {
+                    for(let c = 0; c < jobType[part[i]].type.length; c++) {
+                        let res = jobType[part[i]].type[c];
+                        res[part[i]] = func.operations[op](res[part[i]],jobType[part[i]].amount[c]);
+                        updateProd(res);  
                     }          
                 }
-                jobType.active = func.operations[op](jobType.active,1)
-                func.getId(jobType.name).querySelector('span').innerHTML = `${jobType.active}/${jobType.max}`;
-                jobs.func.updateAssigned(1,op); 
-            }  
-        }
+            }
+            jobType.active = func.operations[op](jobType.active,1)
+            func.getId(`${jobType.name}Number`).innerHTML = `${jobType.active}/${jobType.max}`;
+            jobs.func.updateAssigned(1,op); 
+        }  
     }  
 }
-function updateProd(curres) {
-    var resEndProd =  Math.round((curres.endProd()*10)*10000)/10000;
-    if(curres.endProd() >= 0) {
-        func.getId(`${curres.name}Prod`).innerHTML = `+${resEndProd}/s`;
+function updateProd(res) {
+    var resEndProd =  Math.round((res.endProd()*10)*10000)/10000;
+    if(res.endProd() >= 0) {
+        func.getId(`${res.name}Prod`).innerHTML = `+${resEndProd}/s`;
     } else {
-        func.getId(`${curres.name}Prod`).innerHTML = `${resEndProd}/s`;
+        func.getId(`${res.name}Prod`).innerHTML = `${resEndProd}/s`;
     }
 }
 function changeModifier(modType,modAmount,op) {
@@ -263,8 +256,7 @@ function autoProduction() {
         var curres = entry[1];
         if(curres.unlocked == true) {
             if(curres.production != "none") {
-                curres.amount += curres.endProd(); 
-                curres.amount = Math.round(curres.amount * 100) / 100;
+                curres.amount = Math.round((curres.amount + curres.endProd()) * 100) / 100;
             }
             if(curres.amount > curres.storageLimit) {
                 curres.amount = curres.storageLimit;
@@ -284,36 +276,37 @@ function checkNegative() {
 }
 function setInactive(negres) {
     for(const entry of Object.entries(jobs)) {
-        var jobType = entry[1];
-        for(var i = 0; i < jobType.comsumption.type.length; i++) {
-            if(jobType.comsumption.type[i] != "none" && negres == res) {
-                for(var i = 0; i < jobType.comsumption.type.length; i++) {
-                    res = jobType.comsumption.type[i];
-                    res.comsumption = res.comsumption - (jobType.comsumption.amount[i] * jobType.active);
-                    updateProd(res);
+        let jobType = entry[1];
+        if(entry[0] != "func") {
+            for(var i = 0; i < jobType.comsumption.type.length; i++) {
+                if(negres == jobType.comsumption.type[i]) {
+                    let part = ["production","comsumption"]
+                    for(let I = 0; I < 2; I++) {
+                        for(let i = 0; i < jobType[part[I]].type.length; i++) {
+                            let res = jobType[part[I]].type[i];
+                            res[part[I]] -= (jobType[part[I]].amount[i] * jobType.active);
+                            updateProd(res);
+                        }
+                    }
+                    jobs.func.updateAssigned(jobType.active,"-")
+                    jobType.active = 0;
+                    func.getId(`${jobType.name}Number`).innerHTML = `${jobType.active}/${jobType.max}`;
+                    break;
                 }
-                for(var i = 0; i < jobType.production.type.length; i++) {
-                    res = jobType.production.type[i];
-                    res.production = res.production - (jobType.production.amount * jobType.active);
-                    updateProd(res);
-                }
-                jobs.func.updateAssigned(jobType.active,"-")
-                jobType.active = 0;
-                func.getId(jobType.name).querySelector('span').innerHTML = `${jobType.active}/${jobType.max}`;
-                break;
             }
-        } 
+        }
     }
 }
 function populationCheck() {
     if(resources.population.storageLimit != resources.population.amount && resources.food.amount > 0) {
         resources.population.amount += 1;
         resources.food.comsumption += 0.1;
-        func.getId(`${resources.population.name}Amount`).innerHTML = population.amount;
+        console.log(resources.population.name)
+        func.getId(`${resources.population.name}Amount`).innerHTML = resources.population.amount;
     } else if(resources.food.amount < 0 && resources.population.amount != 0) {
         resources.population.amount -= 1;
         resources.food.comsumption -= 0.1;
-        getyId(`${resources.population.name}Amount`).innerHTML = resources.population.amount;
+        func.getId(`${resources.population.name}Amount`).innerHTML = resources.population.amount;
     }
     if(jobs.func.tab == true) {
         jobs.func.updateAssigned(0,"+");
@@ -333,9 +326,9 @@ function pricechange() {
         }
     }
 }
-setInterval(function(){autoProduction();},100);
-setInterval(function(){populationCheck();},10000);
-setInterval(function(){pricechange();},60000)
+setInterval(() => autoProduction(),100);
+setInterval(() => populationCheck(),10000);
+setInterval(() => pricechange(),60000)
 //----------------------------------------------------------------------------------------------------------------------------------
 window.cheatTest = function(op) {
     for(const entry of Object.entries(resources)) {
@@ -364,8 +357,8 @@ function openTab(evt,tabName) {
     evt.currentTarget.className += " active";
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------
-func.getId("buildingTabButton").addEventListener("click",function(){ openTab(event,'building content')});
-func.getId("warfareButton").addEventListener("click",function(){ upgrades.func.createWarvareTab() });
+func.getId("buildingTabButton").addEventListener("click",() => openTab(event,'building content'));
+func.getId("warfareButton").addEventListener("click",() => upgrades.func.createWarvareTab() );
 for(var i = 0; i < 5 ; i++) {
     if(i < 3) {
         addOnclickForClickResouces(i)
@@ -374,13 +367,13 @@ for(var i = 0; i < 5 ; i++) {
 }
 function addOnclickForClickResouces(i) {
     var curRes = Object.entries(resources)[i][1]
-    func.getId(`${curRes.name}Gather`).addEventListener("click",function() {resources.func.click(curRes)});
-    func.getId(`${curRes.name}Gather`).addEventListener("mouseover",function() {func.tooltip.edit("gather",curRes)});
+    func.getId(`${curRes.name}Gather`).addEventListener("click",() => resources.func.click(curRes));
+    func.getId(`${curRes.name}Gather`).addEventListener("mouseover",() => func.tooltip.edit("gather",curRes));
 }
 function addOnclickForBuilding(i) {
     var curBuilding = Object.entries(buildings)[i][1]
-    func.getId(`${curBuilding.name}`).addEventListener("mouseover",function(){func.tooltip.edit("building",curBuilding)})
-    func.getId(`${curBuilding.name}Buy`).addEventListener("click",function(){buildings.func.changeAmount(curBuilding,"+")})
-    func.getId(`${curBuilding.name}Sell`).addEventListener("click",function(){buildings.func.changeAmount(curBuilding,"-")})
+    func.getId(`${curBuilding.name}`).addEventListener("mouseover",() => func.tooltip.edit("building",curBuilding))
+    func.getId(`${curBuilding.name}Buy`).addEventListener("click",() => buildings.func.changeAmount(curBuilding,"+"))
+    func.getId(`${curBuilding.name}Sell`).addEventListener("click",() => buildings.func.changeAmount(curBuilding,"-"))
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
