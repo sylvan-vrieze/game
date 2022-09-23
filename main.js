@@ -252,7 +252,7 @@ function addProdAndComp(id,prodres,prodAmount,compres,compAmount) {
 export { changeModifier,addProdAndComp,changeProdAndComp }
 //---------------------------------------------------------------------------------------------------------------------------------
 function autoProduction() {
-    for (const entry of Object.entries(resources)) {
+    for(const entry of Object.entries(resources)) {
         var curres = entry[1];
         if(curres.unlocked == true) {
             if(curres.production != "none") {
