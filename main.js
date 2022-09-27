@@ -1,7 +1,8 @@
 const func = {
     getId: id => document.getElementById(id),
     removeElement: id => func.getId(id).remove(),
-    addClass: (id,clas) => func.getId(id).classList.add(clas) ,
+    addClass: (id,clas) => func.getId(id).classList.add(clas),
+    onclick: (id,funct) => func.getId(id).addEventListener("click",funct), 
     checkCost: (resType,resAmount) => {
         for(var i = 0; i < resType.length; i++) {
             if(resType[i].amount < resAmount[i]) {
@@ -253,15 +254,15 @@ export { changeModifier,addProdAndComp,changeProdAndComp }
 //---------------------------------------------------------------------------------------------------------------------------------
 function autoProduction() {
     for(const entry of Object.entries(resources)) {
-        var curres = entry[1];
-        if(curres.unlocked == true) {
-            if(curres.production != "none") {
-                curres.amount = Math.round((curres.amount + curres.endProd()) * 100) / 100;
+        var res = entry[1];
+        if(res.unlocked == true) {
+            if(res.production != "none") {
+                res.amount = Math.round((res.amount + res.endProd()) * 100) / 100;
             }
-            if(curres.amount > curres.storageLimit) {
-                curres.amount = curres.storageLimit;
+            if(res.amount > res.storageLimit) {
+                res.amount = res.storageLimit;
             }
-            func.getId(`${curres.name}Amount`).innerHTML = `${curres.amount}`;
+            func.getId(`${res.name}Amount`).innerHTML = `${res.amount}`;
         }
     }
     checkNegative();
@@ -301,7 +302,6 @@ function populationCheck() {
     if(resources.population.storageLimit != resources.population.amount && resources.food.amount > 0) {
         resources.population.amount += 1;
         resources.food.comsumption += 0.1;
-        console.log(resources.population.name)
         func.getId(`${resources.population.name}Amount`).innerHTML = resources.population.amount;
     } else if(resources.food.amount < 0 && resources.population.amount != 0) {
         resources.population.amount -= 1;
@@ -367,13 +367,13 @@ for(var i = 0; i < 5 ; i++) {
 }
 function addOnclickForClickResouces(i) {
     var curRes = Object.entries(resources)[i][1]
-    func.getId(`${curRes.name}Gather`).addEventListener("click",() => resources.func.click(curRes));
+    func.onclick(`${curRes.name}Gather`,() => resources.func.click(curRes))
     func.getId(`${curRes.name}Gather`).addEventListener("mouseover",() => func.tooltip.edit("gather",curRes));
 }
 function addOnclickForBuilding(i) {
     var curBuilding = Object.entries(buildings)[i][1]
     func.getId(`${curBuilding.name}`).addEventListener("mouseover",() => func.tooltip.edit("building",curBuilding))
-    func.getId(`${curBuilding.name}Buy`).addEventListener("click",() => buildings.func.changeAmount(curBuilding,"+"))
-    func.getId(`${curBuilding.name}Sell`).addEventListener("click",() => buildings.func.changeAmount(curBuilding,"-"))
+    func.onclick(`${curBuilding.name}Buy`,() => buildings.func.changeAmount(curBuilding,"+"))
+    func.onclick(`${curBuilding.name}Sell`,() => buildings.func.changeAmount(curBuilding,"-"))
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
