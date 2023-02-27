@@ -17,20 +17,22 @@ function resource(id,name,amount,production,comsumption,storageLimit,modifier,un
     };
 }
 const resources = {
-    food: new resource(0,"food",0,0,0,500,1,true,0.001,0.001),
-    wood: new resource(1,"wood",0,0,0,500,1,true,0.001,0.001),
-    stone: new resource(2,"stone",0,0,0,500,1,true,0.001,0.001),
-    copperOre: new resource(3,"copper ore",0,0,0,500,1,false,0.0015,0.0015),
-    coal: new resource(4,"coal",0,0,0,500,1,false,0.0015,0.0015),
-    copperIngot: new resource(5,"copper ingot",0,0,0,250,1,false,0.0025,0.0025), 
-    knowledge: new resource(6,"knowledge",0,0,0,100,1,true,0,0),
-    population: new resource(7,"population",0,"none","none",10,1,true,0,0),
-    ironOre: new resource(8,"iron ore",0,0,0,500,1,false,0.002,0.002),
-    ironIngot: new resource(9,"iron ingot",0,0,0,250,1,false,0.0045,0.0045),
-    gold: new resource(10,"gold",0,0,0,100,1,false,0,0),
-    fur: new resource(11,"fur",0,0,0,300,1,false,0.002,0.002),
+    resource: {
+        food: new resource(0,"food",0,0,0,500,1,true,0.001,0.001),
+        wood: new resource(1,"wood",0,0,0,500,1,true,0.001,0.001),
+        stone: new resource(2,"stone",0,0,0,500,1,true,0.001,0.001),
+        copperOre: new resource(3,"copper ore",0,0,0,500,1,false,0.0015,0.0015),
+        coal: new resource(4,"coal",0,0,0,500,1,false,0.0015,0.0015),
+        copperIngot: new resource(5,"copper ingot",0,0,0,250,1,false,0.0025,0.0025), 
+        knowledge: new resource(6,"knowledge",0,0,0,100,1,true,0,0),
+        population: new resource(7,"population",0,"none","none",10,1,true,0,0),
+        ironOre: new resource(8,"iron ore",0,0,0,500,1,false,0.002,0.002),
+        ironIngot: new resource(9,"iron ingot",0,0,0,250,1,false,0.0045,0.0045),
+        gold: new resource(10,"gold",0,0,0,100,1,false,0,0),
+        fur: new resource(11,"fur",0,0,0,300,1,false,0.002,0.002),
+    },
     func: {
-        click: (res) => { res.amount += 1 },
+        click: (res) => res.amount += 1,
         createUI: (res) => {
             let resUiArray = [["Name",`${res.name}:`],["Amount","0"],["Max",`/${res.storageLimit}`],["Prod",`+0/s`]];
             const resImg = document.createElement('img')

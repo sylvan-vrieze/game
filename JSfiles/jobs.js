@@ -16,22 +16,24 @@ function job(id,name,active,max,prodType,prodAmount,compType,compAmount,uipresen
     this.uipresent = uipresent; 
 }
 const jobs = {
-    lumberjack: new job(0,"lumberjack",0,0,[resources.wood],[0.1],["none"],[0],false),
-    qaurryworker: new job(1,"qaurryworker",0,0,[resources.stone],[0.1],["none"],[0],false),
-    miner: new job(2,"miner",0,0,[resources.copperOre],[0.1],["none"],[0],false),
-    coalminer: new job(3,"coalminer",0,0,[resources.coal],[0.1],["none"],[0],false),
-    smelter: new job(4,"smelter",0,0,[resources.copperIngot],[0.01],[resources.copperOre,resources.coal],[0.2,0.3],false),
-    farmer: new job(5,"farmer",0,0,[resources.food],[0.125],["none"],[0],false), 
-    librarian: new job(6,"librarian",0,0,[resources.knowledge],[0.02],["none"],[0],false),
-    charcoalMaker: new job(7,"charcoal maker",0,0,[resources.coal],[0.1],[resources.wood],[0.2],false),
-    hunter: new job(8,"hunter",0,0,[resources.food,resources.fur],[0.11,0.025],["none"],[0],false),
+    job: {
+        lumberjack: new job(0,"lumberjack",0,0,[resources.resource.wood],[0.1],["none"],[0],false),
+        qaurryworker: new job(1,"qaurryworker",0,0,[resources.resource.stone],[0.1],["none"],[0],false),
+        miner: new job(2,"miner",0,0,[resources.resource.copperOre],[0.1],["none"],[0],false),
+        coalminer: new job(3,"coalminer",0,0,[resources.resource.coal],[0.1],["none"],[0],false),
+        smelter: new job(4,"smelter",0,0,[resources.resource.copperIngot],[0.01],[resources.resource.copperOre,resources.resource.coal],[0.2,0.3],false),
+        farmer: new job(5,"farmer",0,0,[resources.resource.food],[0.125],["none"],[0],false), 
+        librarian: new job(6,"librarian",0,0,[resources.resource.knowledge],[0.02],["none"],[0],false),
+        charcoalMaker: new job(7,"charcoal maker",0,0,[resources.resource.coal],[0.1],[resources.resource.wood],[0.2],false),
+        hunter: new job(8,"hunter",0,0,[resources.resource.food,resources.resource.fur],[0.11,0.025],["none"],[0],false),
+    },
     func: {
         tab: false,
         assigned: 0,
         updateAssigned: (amount,op) => {
             var asPop = func.getId("asPop");
             jobs.func.assigned = func.operations[op](jobs.func.assigned,amount);
-            asPop.innerHTML = `assigned ${jobs.func.assigned}/${resources.population.amount}`;
+            asPop.innerHTML = `assigned ${jobs.func.assigned}/${resources.resource.population.amount}`;
         },
         createUi: (jobType) => {
             const curjob = document.createElement("div");
@@ -39,9 +41,9 @@ const jobs = {
             curjob.innerHTML = `<div class="jobText">${jobType.name}</div><button id="${jobType.name}As">assign</button>
                 <div id="${jobType.name}Number" style="display: inline-block;">0/1</div><button id="${jobType.name}UnAs">unassign</button>`;
             func.getId("jobs content").appendChild(curjob);
-            func.getId(curjob.id).onmouseover = () => func.tooltip.edit('job',jobType);
-            func.getId(`${jobType.name}As`).onclick = () => changeProdAndComp(jobType,"+");
-            func.getId(`${jobType.name}UnAs`).onclick = () => changeProdAndComp(jobType,"-");
+            func.onhover(curjob.id,() => func.tooltip.job(jobType));
+            func.onclick(`${jobType.name}As`,() => changeProdAndComp(jobType,"+"));
+            func.onclick(`${jobType.name}UnAs`,() => changeProdAndComp(jobType,"-"));
             func.addClass(`${jobType.name}As`,"jobButton");
             func.addClass(`${jobType.name}UnAs`,"jobButton");
             jobType.uipresent = true;
@@ -50,7 +52,7 @@ const jobs = {
             if(jobs.func.tab == false) {
                 func.create.tab("jobs");
                 const element = document.createElement("span");
-                element.innerHTML = `assigned 0/${resources.population.amount}`;
+                element.innerHTML = `assigned 0/${resources.resource.population.amount}`;
                 element.id = "asPop"
                 func.getId("jobs content").appendChild(element);
                 func.addClass(element.id,"large");

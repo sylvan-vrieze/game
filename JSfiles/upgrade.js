@@ -1,25 +1,25 @@
 import { resources } from "./resources.js";
 import { buildings } from "./buildings.js";
-import { func,changeModifier } from "../main.js";
+import { func } from "../main.js";
 import { warfare } from "./warfare.js";
-function upgrade(name,id,explanation,MType,MAmount,CType,CAmount,effect) {
+function upgrade(name,id,explanation,Mresource,Mamount,Cresource,Camount,effect) {
     this.name = name;
     this.id = id;
     this.explanation = explanation;
     this.modifier = {
-        type:MType,
-        amount:MAmount,
+        resource:Mresource,
+        amount:Mamount,
     }
     this.cost = {
-        type:CType,
-        amount:CAmount,
+        resource:Cresource,
+        amount:Camount,
     }
     this.effect = effect;
 }
 const upgrades = {
-    copperAxe: new upgrade("copper axe",0,"Stronger axes allow for faster cutting",[resources.wood],[0.25],[resources.copperIngot],[50],() => {if(func.checkCost([resources.copperIngot],[50]) == 1) {changeModifier([resources.wood],[0.20],"+");func.removeElement("copper axe")}}),
-    copperHoe: new upgrade("copper hoe",1,"",[resources.food],[0.20],[resources.copperIngot],[40],() => {if(func.checkCost([resources.copperIngot],[50]) == 1) {changeModifier([resources.food],[0.20],"+");func.removeElement("copper hoe")}}),
-    basicWeapons: new upgrade("basic weapons",2,"Basic weapons allow for hunting and warfare",["none"],["none"],[resources.copperIngot],[125],() => {if(func.checkCost([resources.copperIngot],[125]) == 1) {upgrades.func.createWarvareTab(); func.create.button(buildings.huntersLodge); resources.func.createUI(resources.fur); func.removeElement("basic weapons");}}),
+    copperAxe: new upgrade("copper axe",0,"Stronger axes allow for faster cutting",[resources.resource.wood],[0.25],[resources.resource.copperIngot],[50],() => upgrades.func.get(upgrades.copperAxe)),
+    copperHoe: new upgrade("copper hoe",1,"",[resources.resource.food],[0.20],[resources.resource.copperIngot],[40],() => upgrades.func.get(upgrades.copperHoe)),
+    basicWeapons: new upgrade("basic weapons",2,"Basic weapons allow for hunting and warfare",["none"],["none"],[resources.resource.copperIngot],[125],() => upgrades.func.get(upgrades.basicWeapons)),
     func: {
         createWarvareTab: () => {
             func.create.tab("warfare");
@@ -43,6 +43,20 @@ const upgrades = {
             warfare.func.createNation(warfare.nations.nation1)
             warfare.func.createNation(warfare.nations.nation2)
             warfare.func.createNation(warfare.nations.nation3)
+        },
+        get: (upgrade) => {
+            if(func.checkCost(upgrade.cost.resource,upgrade.cost.amount) == 1) {
+                if(upgrade.modifier.resource != "none") {
+                    for(let i = 0; i < upgrade.modifier.resource.length; i++) {
+                        func.changeModifier(upgrade.modifier.resource,upgrade.modifier.amount,"+")
+                    }
+                }
+                func.removeElement(upgrade.name)
+                switch(upgrade) {
+                    case upgrades.basicWeapons: upgrades.func.createWarvareTab(); func.create.button(buildings.huntersLodge); resources.func.createUI(resources.resource.fur); break;
+                }
+                func.addCost(upgrade.cost.resource,upgrade.cost.amount)
+            }
         }
     }
 }
