@@ -26,7 +26,7 @@ const func = {
         }
     },
     changeModifier: (res,Amount,op) => {
-        for(let i = 0; i < res.length; s++) {
+        for(let i = 0; i < res.length; i++) {
             res[i].modifier = func.operations[op](res[i].modifier,Amount[i]);
             func.updateProd(res[i]);
         }
@@ -38,22 +38,21 @@ const func = {
         ":": (a,b) =>  a / b,
     },
     create: {
-        button: (item) => {
+        button: item => {
             const button = document.createElement("div");
             button.id = item.name;
             if(item.constructor.name == "building") {
-                button.innerHTML = `
-                <div class="buildingBuy" id="${item.name}Buy">
-                    <span class="buildingtext">${item.name}</span>
-                </div>
-                <div class="buildingCount" id="${item.name}Count">0</div>
-                <div class="buildingSell"  id="${item.name}Sell">sell</div>`;
+                button.innerHTML = `<div class="buildingBuy" id="${item.name}Buy">
+                                        <span class="buildingtext">${item.name}</span>
+                                    </div>
+                                    <div class="buildingCount" id="${item.name}Count">0</div>
+                                    <div class="buildingSell"  id="${item.name}Sell">sell</div>`;
                 func.getId(`${item.type} ${item.constructor.name}`).appendChild(button);
                 func.addClass(item.name,"buildingButton")
                 func.onclick(`${item.name}Sell`,() => buildings.func.changeAmount(item,'-'))
                 func.onclick(`${item.name}Buy`,() => buildings.func.changeAmount(item,'+')) 
             } else {
-                button.onclick = function() { item.effect(); }
+                button.onclick = () => item.effect();
                 button.innerHTML = item.name
                 func.getId(`${item.constructor.name} content`).appendChild(button);
                 func.addClass(item.name,"button");
@@ -61,7 +60,7 @@ const func = {
             button.onmouseover = () => func.tooltip[`${item.constructor.name}`](item); 
             
         },
-        tab: (name) => { 
+        tab: name => { 
             const tab = document.createElement("button");
             tab.id = name;
             tab.innerHTML = name;
@@ -163,7 +162,7 @@ export { func }
 //-----------------------------------------------------------------------------------------------------------------------------------------
 import { resources } from "./JSfiles/resources.js"
 import { jobs } from "./JSfiles/jobs.js"
-import { buildings } from "./JSfiles/buildings.js"; 
+import { buildings,build } from "./JSfiles/buildings.js"; 
 import { upgrades } from "./JSfiles/upgrade.js";
 //----------------------------------------------------------------------------------------------------------------------------------
 const market = {
@@ -386,7 +385,7 @@ function addOnclickForClickResouces(i) {
     func.onhover(`${res.name}Gather`,() => func.tooltip.gather(res))
 }
 function addOnclickForBuilding(i) {
-    let building = Object.values(buildings)[i]
+    let building = Object.values(build)[i]
     func.onhover(`${building.name}`,() => func.tooltip.building(building))
     func.onclick(`${building.name}Buy`,() => buildings.func.changeAmount(building,"+"))
     func.onclick(`${building.name}Sell`,() => buildings.func.changeAmount(building,"-"))
