@@ -1,5 +1,5 @@
 import { func } from "../main.js";
-import { resources } from "./resources.js";
+import { res } from "./resources.js";
 import { jobs } from "./jobs.js";
 import { researches } from "./research.js";
 function building(name,id,type,amount,Camount,resourceCost,costmultiplier,jobType,jobAmount,Stype,SAmount,Mtype,MAmount) {
@@ -26,18 +26,20 @@ function building(name,id,type,amount,Camount,resourceCost,costmultiplier,jobTyp
     }
 }
 const buildings = {
-    farm: new building("farm",0,"production",0,[5],[resources.resource.wood],1.2,[jobs.job.farmer],[1],["none"],[0],["none"],[0]),
-    lumberjackHut: new building("lumberjack hut",1,"production",0,[10],[resources.resource.wood],1.2,[jobs.job.lumberjack],[1],["none"],[0],["none"],[0]),
-    quarry: new building("quarry",2,"production",0,[10],[resources.resource.wood],1.2,[jobs.job.qaurryworker],[1],["none"],[0],["none"],[0]),
-    library: new building("library",3,"storage",0,[50,25],[resources.resource.wood,resources.resource.stone],1.4,[jobs.job.librarian],[1],[resources.resource.knowledge],[100],[resources.resource.knowledge],[0.2]),
-    simpleHut: new building("simple hut",4,"housing",0,[15,5],[resources.resource.wood,resources.resource.stone],1.3,["none"],[0],[resources.resource.population],[5],["none"],[0]),
-    mine: new building("mine",5,"production",0,[15,10],[resources.resource.wood,resources.resource.stone],1.2,[jobs.job.miner,jobs.job.coalminer],[1,1],["none"],[0],["none"],[0]),
-    smeltery: new building("smeltery",6,"production",0,[10,30],[resources.resource.wood,resources.resource.stone],1.3,[jobs.job.smelter],[1],["none"],[0],["none"],[0]),
-    wharehouse: new building("wharehouse",7,"storage",0,[40,40],[resources.resource.wood,resources.resource.stone],1.4,["none"],[0],[resources.resource.food,resources.resource.wood,resources.resource.stone,resources.resource.copperOre,resources.resource.coal,resources.resource.copperIngot,resources.resource.ironOre,resources.resource.ironIngot,resources.resource.gold],[500,500,500,500,500,250,500,250,100],["none"],[0]),
-    sawmill: new building("sawmill",8,"production",0,[100,10],[resources.resource.wood,resources.resource.ironIngot],1.4,["none"],[0],["none"],[0],[resources.resource.wood],[0.1]),
-    charcoalKiln: new building("charcoal kiln",9,"production",0,[25,75],[resources.resource.wood,resources.resource.stone],1.3,[jobs.job.charcoalMaker],[1],["none"],[0],["none"],[0]),
-    windmill: new building("windmill",10,"production",0,[125,50],[resources.resource.wood,resources.resource.stone],1.3,["none"],[0],["none"],[0],[resources.resource.food],[0.10]),
-    huntersLodge: new building("hunters lodge",11,"production",0,[75,],[resources.resource.wood,],1.3,[jobs.job.hunter],[1],[resources.resource.fur],[100],["none"],[0]),
+    building: {
+        farm: new building("farm",0,"production",0,[5],[res.wood],1.2,[jobs.job.farmer],[1],["none"],[0],["none"],[0]),
+        lumberjackHut: new building("lumberjack hut",1,"production",0,[10],[res.wood],1.2,[jobs.job.lumberjack],[1],["none"],[0],["none"],[0]),
+        quarry: new building("quarry",2,"production",0,[10],[res.wood],1.2,[jobs.job.qaurryworker],[1],["none"],[0],["none"],[0]),
+        library: new building("library",3,"storage",0,[50,25],[res.wood,res.stone],1.4,[jobs.job.librarian],[1],[res.knowledge],[100],[res.knowledge],[0.2]),
+        simpleHut: new building("simple hut",4,"housing",0,[15,5],[res.wood,res.stone],1.3,["none"],[0],[res.population],[5],["none"],[0]),
+        mine: new building("mine",5,"production",0,[15,10],[res.wood,res.stone],1.2,[jobs.job.miner,jobs.job.coalminer],[1,1],["none"],[0],["none"],[0]),
+        smeltery: new building("smeltery",6,"production",0,[10,30],[res.wood,res.stone],1.3,[jobs.job.smelter],[1],["none"],[0],["none"],[0]),
+        wharehouse: new building("wharehouse",7,"storage",0,[40,40],[res.wood,res.stone],1.4,["none"],[0],[res.food,res.wood,res.stone,res.copperOre,res.coal,res.copperIngot,res.ironOre,res.ironIngot,res.gold],[500,500,500,500,500,250,500,250,100],["none"],[0]),
+        sawmill: new building("sawmill",8,"production",0,[100,10],[res.wood,res.ironIngot],1.4,["none"],[0],["none"],[0],[res.wood],[0.1]),
+        charcoalKiln: new building("charcoal kiln",9,"production",0,[25,75],[res.wood,res.stone],1.3,[jobs.job.charcoalMaker],[1],["none"],[0],["none"],[0]),
+        windmill: new building("windmill",10,"production",0,[125,50],[res.wood,res.stone],1.3,["none"],[0],["none"],[0],[res.food],[0.10]),
+        huntersLodge: new building("hunters lodge",11,"production",0,[75,],[res.wood,],1.3,[jobs.job.hunter],[1],[res.fur],[100],["none"],[0]),
+    },
     func: {
         researchUnlocked: false,
         changeAmount: (building,op) => {
@@ -72,7 +74,7 @@ const buildings = {
                     }
                     func.getId(`${building.name}Count`).innerHTML = `${building.amount}`;
                     func.tooltip.building(building);
-                    if(building == buildings.library && buildings.func.researchUnlocked == false ) {
+                    if(building == build.library && buildings.func.researchUnlocked == false ) {
                         func.create.tab("research");
                         func.create.button(researches.storage);
                         func.create.button(researches.mining);
@@ -84,4 +86,5 @@ const buildings = {
         },
     }
 }
-export { buildings };
+let build = buildings.building
+export { buildings,build };

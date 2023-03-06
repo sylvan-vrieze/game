@@ -53,4 +53,5 @@ const resources = {
         }
     },
 }
-export { resources }
+let res = resources.resource
+export { resources,res }

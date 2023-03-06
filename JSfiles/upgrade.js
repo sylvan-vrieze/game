@@ -1,5 +1,5 @@
-import { resources } from "./resources.js";
-import { buildings } from "./buildings.js";
+import { resources,res } from "./resources.js";
+import { build } from "./buildings.js";
 import { func } from "../main.js";
 import { warfare } from "./warfare.js";
 function upgrade(name,id,explanation,Mresource,Mamount,Cresource,Camount,effect) {
@@ -17,9 +17,9 @@ function upgrade(name,id,explanation,Mresource,Mamount,Cresource,Camount,effect)
     this.effect = effect;
 }
 const upgrades = {
-    copperAxe: new upgrade("copper axe",0,"Stronger axes allow for faster cutting",[resources.resource.wood],[0.25],[resources.resource.copperIngot],[50],() => upgrades.func.get(upgrades.copperAxe)),
-    copperHoe: new upgrade("copper hoe",1,"",[resources.resource.food],[0.20],[resources.resource.copperIngot],[40],() => upgrades.func.get(upgrades.copperHoe)),
-    basicWeapons: new upgrade("basic weapons",2,"Basic weapons allow for hunting and warfare",["none"],["none"],[resources.resource.copperIngot],[125],() => upgrades.func.get(upgrades.basicWeapons)),
+    copperAxe: new upgrade("copper axe",0,"Stronger axes allow for faster cutting",[res.wood],[0.25],[res.copperIngot],[50],() => upgrades.func.get(upgrades.copperAxe)),
+    copperHoe: new upgrade("copper hoe",1,"",[res.food],[0.20],[res.copperIngot],[40],() => upgrades.func.get(upgrades.copperHoe)),
+    basicWeapons: new upgrade("basic weapons",2,"Basic weapons allow for hunting and warfare",["none"],["none"],[res.copperIngot],[125],() => upgrades.func.get(upgrades.basicWeapons)),
     func: {
         createWarvareTab: () => {
             func.create.tab("warfare");
@@ -53,7 +53,7 @@ const upgrades = {
                 }
                 func.removeElement(upgrade.name)
                 switch(upgrade) {
-                    case upgrades.basicWeapons: upgrades.func.createWarvareTab(); func.create.button(buildings.huntersLodge); resources.func.createUI(resources.resource.fur); break;
+                    case upgrades.basicWeapons: upgrades.func.createWarvareTab(); func.create.button(build.huntersLodge); resources.func.createUI(res.fur); break;
                 }
                 func.addCost(upgrade.cost.resource,upgrade.cost.amount)
             }

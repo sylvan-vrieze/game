@@ -1,4 +1,4 @@
-import { resources } from "./resources.js";
+import { res } from "./resources.js";
 import { func,market } from "../main.js";
 function nation(id,name,selling,buying,UTamount,units,opinion) {
     this.id = id
@@ -29,15 +29,15 @@ function unit(id,name,CUamount,Mamount,COamount,resourceCost,health,defence,dama
     }
 }
 const units = {
-    warrior: new unit(0,"warrior",0,10,[25],[resources.resource.copperIngot],20,10,5),
-    archer: new unit(1,"archer",0,5,[5,20],[resources.resource.copperIngot,resources.resource.wood],15,5,10),
+    warrior: new unit(0,"warrior",0,10,[25],[res.copperIngot],20,10,5),
+    archer: new unit(1,"archer",0,5,[5,20],[res.copperIngot,res.wood],15,5,10),
 }
 const warfare = {
     units,
     nations: {
-        nation1: new nation(0,"nation1",[resources.resource.food,resources.resource.wood,resources.resource.stone],[resources.resource.coal],[10],[units.warrior],0),
-        nation2: new nation(1,"nation2",[resources.resource.coal],[resources.resource.food,resources.resource.copperOre],[15,5],[units.warrior,units.archer],0),
-        nation3: new nation(2,"nation3",[resources.resource.copperIngot,resources.resource.ironIngot],[resources.resource.fur],[30,20],[units.warrior,units.archer],0),
+        nation1: new nation(0,"nation1",[res.food,res.wood,res.stone],[res.coal],[10],[units.warrior],0),
+        nation2: new nation(1,"nation2",[res.coal],[res.food,res.copperOre],[15,5],[units.warrior,units.archer],0),
+        nation3: new nation(2,"nation3",[res.copperIngot,res.ironIngot],[res.fur],[30,20],[units.warrior,units.archer],0),
     }, 
     func: {
         createNation: (curNation) => {
