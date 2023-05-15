@@ -7,10 +7,10 @@ const func = {
     checkCost: (res,cost) => {
         for(let i = 0; i < res.length; i++) {
             if(res[i].amount < cost[i]) {
-                return 0;
+                return false;
             } 
         }
-        return 1;
+        return true;
     },
     addCost: (res,cost) => {
         for(let i = 0; i < res.length; i++) {
@@ -160,7 +160,7 @@ const func = {
 }
 export { func }
 //-----------------------------------------------------------------------------------------------------------------------------------------
-import { resources } from "./JSfiles/resources.js"
+import { resources,res } from "./JSfiles/resources.js"
 import { jobs } from "./JSfiles/jobs.js"
 import { buildings,build } from "./JSfiles/buildings.js"; 
 import { upgrades } from "./JSfiles/upgrade.js";
@@ -372,7 +372,7 @@ function openTab(evt,tabName) {
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------
 func.getId("buildingTabButton").addEventListener("click",() => openTab(event,'building content'));
-func.getId("warfareButton").addEventListener("click",() => upgrades.func.createWarvareTab() );
+func.getId("warfareButton").addEventListener("click",() => { upgrades.func.createWarvareTab(),resources.func.createUI(res.copperIngot) } );
 for(let i = 0; i < 5 ; i++) {
     if(i < 3) {
         addOnclickForClickResouces(i)
