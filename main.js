@@ -221,7 +221,7 @@ const market = {
 }
 export { market }
 //----------------------------------------------------------------------------------------------------------------------------------
-function changeProdAndComp(job,op) {
+function changeJobActive(job,op) {
     if(jobs.func.assigned != resources.resource.population.amount && job.max != job.active || op == "-") {
         if(job.active != 0 || op == "+") {
             let part = ["production","comsumption"]
@@ -255,7 +255,7 @@ function addProdAndComp(id,prodRes,prodAmount,compRes,compAmount) {
         func.updateProd(compRes);
     }
 }
-export { addProdAndComp,changeProdAndComp }
+export { addProdAndComp,changeJobActive }
 //---------------------------------------------------------------------------------------------------------------------------------
 function autoProduction() {
     for(const res of Object.values(resources.resource)) {
