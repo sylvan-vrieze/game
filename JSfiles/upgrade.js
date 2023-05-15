@@ -45,7 +45,7 @@ const upgrades = {
             warfare.func.createNation(warfare.nations.nation3)
         },
         get: (upgrade) => {
-            if(func.checkCost(upgrade.cost.resource,upgrade.cost.amount) == 1) {
+            if(func.checkCost(upgrade.cost.resource,upgrade.cost.amount)) {
                 if(upgrade.modifier.resource != "none") {
                     for(let i = 0; i < upgrade.modifier.resource.length; i++) {
                         func.changeModifier(upgrade.modifier.resource,upgrade.modifier.amount,"+")

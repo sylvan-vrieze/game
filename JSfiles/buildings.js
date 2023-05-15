@@ -44,7 +44,7 @@ const buildings = {
         researchUnlocked: false,
         changeAmount: (building,op) => {
             if(building.amount != 0 || op == "+") {
-                if(op == "-" || func.checkCost(building.cost.resource,building.cost.amount) == 1) {
+                if(op == "-" || func.checkCost(building.cost.resource,building.cost.amount)) {
                     building.amount = func.operations[op](building.amount,1);
                     if(building.job.type[0] != "none") {
                         for(var i = 0; i < building.job.type.length; i++) {

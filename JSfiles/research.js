@@ -22,7 +22,7 @@ const researches = {
     woodProcessing: new research("wood processing",6,"",[res.knowledge],[400],() => researches.func.do([build.sawmill,build.charcoalKiln],["none"],["none"],researches.woodProcessing)),
     func: {
         do: (button,resource,prodComp,research) => {
-            if(func.checkCost(research.cost.resource,research.cost.amount) == 1) {
+            if(func.checkCost(research.cost.resource,research.cost.amount)) {
                 if(button[0] != "none") {
                     for(var i = 0; i < button.length; i++) { func.create.button(button[i]); }
                 }

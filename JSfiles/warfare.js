@@ -118,6 +118,7 @@ const warfare = {
                 armyDam += (availableUnits[i].attributes.damage * availableUnits[i].amount.current)
                 armyHP += (availableUnits[i].attributes.health * availableUnits[i].amount.current)
             }
+            console.log(nationAmount)
             let damageTaken = nationDam / (1 + (armyDef / 100))
             let killedUnits = Math.round((damageTaken / 50) * ((nationAmount / armyAmount) * (Math.round(Math.random() * 6))))
             if(killedUnits < 0) { killedUnits = killedUnits * -1 }
@@ -127,10 +128,10 @@ const warfare = {
                 }
             }
             if(market.unlocked) {
-                for(i = 0; nation.selling.length; i++) {
+                for(let i = 0; nation.selling.length; i++) {
                     market.changePrice(nation.selling[i],"*")
                 }
-                for(i = 0; nation.buying.length; i++) {
+                for(let i = 0; nation.buying.length; i++) {
                     market.changePrice(nation.buying[i],":")
                 }
             }
@@ -153,7 +154,7 @@ const warfare = {
 
         },
         trainUnit: (unit) => {
-            if(unit.amount.current != unit.amount.max && func.checkCost(unit.cost.resource,unit.cost.amount) == 1) {
+            if(unit.amount.current != unit.amount.max && func.checkCost(unit.cost.resource,unit.cost.amount)) {
                 unit.amount.current += 1
                 func.getId(`${unit.name}Amount`).innerHTML = `${unit.amount.current}/${unit.amount.max}`
                 func.addCost(unit.cost.resource,unit.cost.amount)
