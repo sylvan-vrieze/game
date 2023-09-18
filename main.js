@@ -381,8 +381,8 @@ for(let i = 0; i < 5 ; i++) {
 }
 function addOnclickForClickResouces(i) {
     let res = Object.values(resources.resource)[i]
-    func.onclick(`${res.name}Gather`,() => resources.func.click(res))
-    func.onhover(`${res.name}Gather`,() => func.tooltip.gather(res))
+    func.onclick(`${res.name}`,resources.func.click)
+    func.onhover(`${res.name}`,() => func.tooltip.gather(res))
 }
 function addOnclickForBuilding(i) {
     let building = Object.values(build)[i]

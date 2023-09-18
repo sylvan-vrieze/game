@@ -32,7 +32,7 @@ const resources = {
         fur: new resource(11,"fur",0,0,0,300,1,false,0.002,0.002),
     },
     func: {
-        click: (res) => res.amount += 1,
+        click: () => resources.resource[event.target.id].amount += 1,
         createUI: (res) => {
             let resUiArray = [["Name",`${res.name}:`],["Amount","0"],["Max",`/${res.storageLimit}`],["Prod",`+0/s`]];
             const resImg = document.createElement('img')
