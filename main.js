@@ -75,7 +75,7 @@ const func = {
         }
     },
     tooltip: {
-        gather: res => func.tooltip.text = `gather 1 ${res.name}`,
+        gather: () => func.tooltip.text = `gather 1 ${resources.resource[event.target.id].name}`,
         research: research => func.tooltip.text = `${research.name} <br> ${func.tooltip.cost(research.cost.resource,research.cost.amount)} ${research.explanation}`,
         upgrade: upgrade => {
             func.tooltip.text = `${upgrade.name}<br>
@@ -265,9 +265,11 @@ function autoProduction() {
             }
             if(res.amount > res.storageLimit) {
                 res.amount = res.storageLimit;
+            } else if ( 0 > res.amount) {
+                res.amount = 0
             }
             func.getId(`${res.name}Amount`).innerHTML = `${res.amount}`;
-            if (res.amount < 0) {
+            if (res.amount <= 0) {
                 setInactive(res);
             }
         }
@@ -279,7 +281,7 @@ function tooltipUpdate() {
 }
 function setInactive(negRes) {
     for(const job of Object.values(jobs.job)) {
-        for(var i = 0; i < job.comsumption.type.length; i++) {
+        for(let i = 0; i < job.comsumption.type.length; i++) {
             if(negRes == job.comsumption.type[i]) {
                 let part = ["production","comsumption"]
                 for(let j = 0; j < 2; j++) {
@@ -343,7 +345,7 @@ function daycycle() {
 setInterval(() => autoProduction(),100);
 setInterval(() => populationCheck(),10000);
 setInterval(() => pricechange(),60000);
-setInterval(() => daycycle(),5000)
+setInterval(daycycle,5000)
 //----------------------------------------------------------------------------------------------------------------------------------
 window.cheatTest = function(op) {
     for(const res of Object.values(resources.resource)) {
@@ -382,7 +384,7 @@ for(let i = 0; i < 5 ; i++) {
 function addOnclickForClickResouces(i) {
     let res = Object.values(resources.resource)[i]
     func.onclick(`${res.name}`,resources.func.click)
-    func.onhover(`${res.name}`,() => func.tooltip.gather(res))
+    func.onhover(`${res.name}`,func.tooltip.gather)
 }
 function addOnclickForBuilding(i) {
     let building = Object.values(build)[i]
@@ -390,4 +392,9 @@ function addOnclickForBuilding(i) {
     func.onclick(`${building.name}Buy`,() => buildings.func.changeAmount(building,"+"))
     func.onclick(`${building.name}Sell`,() => buildings.func.changeAmount(building,"-"))
 }
+function test() {
+    //let e = document.querySelector("[name='gather'][id='food']")
+    //console.log(e)
+}
+test()
 //------------------------------------------------------------------------------------------------------------------------------------------
