@@ -263,15 +263,15 @@ function autoProduction() {
             if(res.production != "none") {
                 res.amount = Math.round((res.amount + res.endProd()) * 100) / 100;
             }
+            if (res.amount < 0) {
+                setInactive(res);
+            }
             if(res.amount > res.storageLimit) {
                 res.amount = res.storageLimit;
             } else if ( 0 > res.amount) {
                 res.amount = 0
             }
             func.getId(`${res.name}Amount`).innerHTML = `${res.amount}`;
-            if (res.amount <= 0) {
-                setInactive(res);
-            }
         }
     }
     tooltipUpdate()
