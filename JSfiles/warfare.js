@@ -35,9 +35,9 @@ const units = {
 const warfare = {
     units,
     nations: {
-        nation1: new nation(0,"nation1",[res.food,res.wood,res.stone],[res.coal],[10],[units.warrior],0),
-        nation2: new nation(1,"nation2",[res.coal],[res.food,res.copperOre],[15,5],[units.warrior,units.archer],0),
-        nation3: new nation(2,"nation3",[res.copperIngot,res.ironIngot],[res.fur],[30,20],[units.warrior,units.archer],0),
+        nation1: new nation(0,"nation1",[res.coal,res.stone,res.copperOre],[res.food],[10],[units.warrior],0),
+        nation2: new nation(1,"nation2",[res.coal],[res.wood],[15,5],[units.warrior,units.archer],0),
+        nation3: new nation(2,"nation3",[res.copperIngot,res.ironIngot],[res.coal],[30,20],[units.warrior,units.archer],0),
     }, 
     func: {
         createNation: (curNation) => {
