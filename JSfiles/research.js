@@ -41,6 +41,7 @@ const researches = {
                 func.addCost(research.cost.resource,research.cost.amount)
                 func.removeElement(research.name);
             }
+            func.tooltip.visibilityOff
         },
         createWorkshop: () => {
             func.create.tab("upgrade");

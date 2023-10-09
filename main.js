@@ -42,23 +42,27 @@ const func = {
             const button = document.createElement("div");
             button.id = item.name;
             if(item.constructor.name == "building") {
-                button.innerHTML = `<div class="buildingBuy" id="${item.name}Buy">
-                                        <span class="buildingtext">${item.name}</span>
-                                    </div>
-                                    <div class="buildingCount" id="${item.name}Count">0</div>
-                                    <div class="buildingSell"  id="${item.name}Sell">sell</div>`;
+                button.innerHTML = 
+                `<div class="buildingBuy" id="${item.name}Buy">
+                    <span class="buildingtext">${item.name}</span>
+                </div>
+                <div class="buildingCount" id="${item.name}Count">0</div>
+                <div class="buildingSell"  id="${item.name}Sell">sell</div>`;
                 func.getId(`${item.type} ${item.constructor.name}`).appendChild(button);
                 func.addClass(item.name,"buildingButton")
                 func.onclick(`${item.name}Sell`,() => buildings.func.changeAmount(item,'-'))
                 func.onclick(`${item.name}Buy`,() => buildings.func.changeAmount(item,'+')) 
+                func.getId(`${item.name}Buy`).addEventListener("mouseenter",func.tooltip.visibilityOn)
+                func.getId(`${item.name}Buy`).addEventListener("mouseleave",func.tooltip.visibilityOff)
             } else {
                 button.onclick = () => item.effect();
                 button.innerHTML = item.name
                 func.getId(`${item.constructor.name} content`).appendChild(button);
                 func.addClass(item.name,"button");
+                button.addEventListener("mouseenter",func.tooltip.visibilityOn)
+                button.addEventListener("mouseleave",func.tooltip.visibilityOff)
             }
-            button.onmouseover = () => func.tooltip[`${item.constructor.name}`](item); 
-            
+            button.onmouseover = () => func.tooltip[`${item.constructor.name}`](item);
         },
         tab: name => { 
             const tab = document.createElement("button");
@@ -75,8 +79,11 @@ const func = {
         }
     },
     tooltip: {
-        gather: () => func.tooltip.text = `gather 1 ${resources.resource[event.target.id].name}`,
-        research: research => func.tooltip.text = `${research.name} <br> ${func.tooltip.cost(research.cost.resource,research.cost.amount)} ${research.explanation}`,
+        gather: () => {func.tooltip.text =  `gather 1 ${resources.resource[event.target.id].name}`,func.tooltip.position(event.target)},
+        research: research => {
+            func.tooltip.text = `${research.name} <br> ${func.tooltip.cost(research.cost.resource,research.cost.amount)} ${research.explanation}`
+            func.tooltip.position(event.target)
+        },
         upgrade: upgrade => {
             func.tooltip.text = `${upgrade.name}<br>
             ${func.tooltip.cost(upgrade.cost.resource,upgrade.cost.amount)}
@@ -86,6 +93,7 @@ const func = {
                     func.tooltip.text += `increases the production of ${upgrade.modifier.resource[i].name} by ${upgrade.modifier.amount[i]*100}%<br>`
                 }
             }
+            func.tooltip.position(event.target)
         },
         job: job => {
             func.tooltip.text = `${job.name} <br>`;
@@ -101,6 +109,7 @@ const func = {
                     }
                 }
             }
+            func.tooltip.position(event.target)
         },
         building: building => {
             func.tooltip.text = `${building.name} <br>`;
@@ -131,6 +140,7 @@ const func = {
                     }
                 }
             }
+            func.tooltip.position(event.target)
         },
         market: (type,res) => {
             func.tooltip.text = `${res.name}<br>`;
@@ -139,11 +149,13 @@ const func = {
                 func.tooltip.text += `buy ${amount} <br> cost: ${(Math.round((res.cost.current*amount)*1000)/1000)} gold`;
             } else {
                 func.tooltip.text += `sell ${amount} <br> gain: ${(Math.round(((res.cost.current*amount)*0.8)*1000)/1000)} gold`;
-            }  
+            }
+            func.tooltip.position(event.target)  
         },
         unit: unit => {
             func.tooltip.text = `${unit.name} <br>`
             func.tooltip.text += func.tooltip.cost(unit.cost.resource,unit.cost.amount)
+            func.tooltip.position(event.target)
         },
         cost: (res,cost) => {
             let text = "cost: ";
@@ -156,6 +168,13 @@ const func = {
             text += "<br>";
             return text;
         },
+        position: el => {
+            let tooltip = func.getId('tooltip')
+            tooltip.style.setProperty("top",(el.getBoundingClientRect().top + el.getBoundingClientRect().height) + 5)
+            tooltip.style.setProperty("left",el.getBoundingClientRect().left - (el.getBoundingClientRect().width / 2)) 
+        },
+        visibilityOff: () => func.getId('tooltip').style.setProperty("visibility","hidden"),
+        visibilityOn: () => func.getId('tooltip').style.setProperty("visibility","visible"),
     },
 }
 export { func }
@@ -190,7 +209,11 @@ const market = {
         func.getId(`${res.name}buy`).onclick = () => market.buy(res);
         func.getId(`${res.name}sell`).onclick = () => market.sell(res);
         func.onhover(`${res.name}buy`,() => func.tooltip.market('buy',res))
+        func.getId(`${res.name}buy`).addEventListener("mouseenter",func.tooltip.visibilityOn)
+        func.getId(`${res.name}buy`).addEventListener("mouseleave",func.tooltip.visibilityOff)
         func.onhover(`${res.name}sell`,() => func.tooltip.market('sell',res));
+        func.getId(`${res.name}sell`).addEventListener("mouseenter",func.tooltip.visibilityOn)
+        func.getId(`${res.name}sell`).addEventListener("mouseleave",func.tooltip.visibilityOff)
         func.addClass(`${res.name}buy`,"marketButton");
         func.addClass(`${res.name}sell`,"marketButton");
     },
@@ -385,10 +408,14 @@ function addOnclickForClickResouces(i) {
     let res = Object.values(resources.resource)[i]
     func.onclick(`${res.name}`,resources.func.click)
     func.onhover(`${res.name}`,func.tooltip.gather)
+    func.getId(`${res.name}`).addEventListener("mouseenter",func.tooltip.visibilityOn)
+    func.getId(`${res.name}`).addEventListener("mouseleave",func.tooltip.visibilityOff)
 }
 function addOnclickForBuilding(i) {
     let building = Object.values(build)[i]
     func.onhover(`${building.name}`,() => func.tooltip.building(building))
+    func.getId(`${building.name}Buy`).addEventListener("mouseenter",func.tooltip.visibilityOn)
+    func.getId(`${building.name}Buy`).addEventListener("mouseleave",func.tooltip.visibilityOff)
     func.onclick(`${building.name}Buy`,() => buildings.func.changeAmount(building,"+"))
     func.onclick(`${building.name}Sell`,() => buildings.func.changeAmount(building,"-"))
 }
@@ -396,5 +423,5 @@ function test() {
     //let e = document.querySelector("[name='gather'][id='food']")
     //console.log(e)
 }
-test()
+//test()
 //------------------------------------------------------------------------------------------------------------------------------------------

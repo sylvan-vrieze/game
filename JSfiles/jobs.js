@@ -42,6 +42,8 @@ const jobs = {
                 <div id="${jobType.name}Number" style="display: inline-block;">0/1</div><button id="${jobType.name}UnAs">unassign</button>`;
             func.getId("jobs content").appendChild(curjob);
             func.onhover(curjob.id,() => func.tooltip.job(jobType));
+            func.getId(curjob.id).querySelector("[class='jobText']").addEventListener("mouseenter",func.tooltip.visibilityOn)
+            func.getId(curjob.id).querySelector("[class='jobText']").addEventListener("mouseleave",func.tooltip.visibilityOff)
             func.onclick(`${jobType.name}As`,() => changeJobActive(jobType,"+"));
             func.onclick(`${jobType.name}UnAs`,() => changeJobActive(jobType,"-"));
             func.addClass(`${jobType.name}As`,"jobButton");

@@ -11,6 +11,7 @@
                 <diV id="">  </diV>
             </div>
         </div>
+        <div id="tooltip" class="tooltip">text</div>
         <div class="all">
             <div id="resourceBar" class="resourceBar">
                 <div id="resImage" class="part" style="width: 16px;">
@@ -52,60 +53,57 @@
                 <div id="tab" class="tab">
                     <button id="buildingTabButton" class="tablinks">buildings</button>
                 </div>  
-                <div class="tooltip">
-                    <div id="tooltip" class="tooltiptext">text</div>
-                    <div id="contentlist" class="all">
-                        <div id="building content" class="tabcontent">
-                            <div id="food" name="gather" class="button">gather food</div> 
-                            <div id="wood" name="gather" class="button">gather wood</div> 
-                            <div id="stone" name="gather" class="button">gather stone</div><br>
-                            <div id="production building" class="buildingCatogry">
-                                production buildings: <br>
-                                <div id="farm" class="buildingButton">
-                                    <div id="farmBuy" class="buildingBuy">
-                                        <span class="buildingText">farm</span>
-                                    </div>
-                                    <div class="buildingCount" id="farmCount">0</div>
-                                    <div id="farmSell" class="buildingSell">sell</div>
-                                </div><!--
-                                --><div id="lumberjack hut" class="buildingButton">
-                                    <div id="lumberjack hutBuy"  class="buildingBuy" >
-                                        <span class="buildingText">lumberjack hut</span>
-                                    </div>
-                                    <div class="buildingCount" id="lumberjack hutCount">0</div>
-                                    <div id="lumberjack hutSell" class="buildingSell">sell</div>
-                                </div><!--
-                                --><div id="quarry" class="buildingButton">
-                                    <div id="quarryBuy" class="buildingBuy">
-                                        <span class="buildingText">quarry</span>
-                                    </div>
-                                    <div class="buildingCount" id="quarryCount">0</div>
-                                    <div id="quarrySell" class="buildingSell">sell</div>
-                                </div><!--
-                                --></div>
-                            <div id="storage building" class="buildingCatogry">
-                                storage buildings: <br>
-                                <div id="library" class="buildingButton">
-                                    <div id="libraryBuy" class="buildingBuy">
-                                        <span class="buildingText">library</span>
-                                    </div>
-                                    <div class="buildingCount" id="libraryCount">0</div>
-                                    <div id="librarySell" class="buildingSell">sell</div>
-                                </div><!--
-                                --></div>
-                            <div id="housing building" class="buildingCatogry">
-                                housing: <br>
-                                <div id="simple hut" class="buildingButton">
-                                    <div id="simple hutBuy" class="buildingBuy">
-                                        <span class="buildingText">simple hut</span>
-                                    </div>
-                                    <div class="buildingCount" id="simple hutCount">0</div>
-                                    <div id="simple hutSell" class="buildingSell">sell</div>
-                                </div><!--
-                                --></div>
-                            <button onclick="cheatTest('+')"></button><button onclick="cheatTest('-')"></button><button id="warfareButton"></button>
-                        </div> 
-                    </div>
+                <div id="contentlist" class="all">
+                    <div id="building content" class="tabcontent">
+                        <div id="food" name="gather" class="button">gather food</div> 
+                        <div id="wood" name="gather" class="button">gather wood</div> 
+                        <div id="stone" name="gather" class="button">gather stone</div><br>
+                        <div id="production building" class="buildingCatogry">
+                            production buildings: <br>
+                            <div id="farm" class="buildingButton">
+                                <div id="farmBuy" class="buildingBuy">
+                                    <span class="buildingText">farm</span>
+                                </div>
+                                <div class="buildingCount" id="farmCount">0</div>
+                                <div id="farmSell" class="buildingSell">sell</div>
+                            </div><!--
+                            --><div id="lumberjack hut" class="buildingButton">
+                                <div id="lumberjack hutBuy"  class="buildingBuy" >
+                                    <span class="buildingText">lumberjack hut</span>
+                                </div>
+                                <div class="buildingCount" id="lumberjack hutCount">0</div>
+                                <div id="lumberjack hutSell" class="buildingSell">sell</div>
+                            </div><!--
+                            --><div id="quarry" class="buildingButton">
+                                <div id="quarryBuy" class="buildingBuy">
+                                    <span class="buildingText">quarry</span>
+                                </div>
+                                <div class="buildingCount" id="quarryCount">0</div>
+                                <div id="quarrySell" class="buildingSell">sell</div>
+                            </div><!--
+                            --></div>
+                        <div id="storage building" class="buildingCatogry">
+                            storage buildings: <br>
+                            <div id="library" class="buildingButton">
+                                <div id="libraryBuy" class="buildingBuy">
+                                    <span class="buildingText">library</span>
+                                </div>
+                                <div class="buildingCount" id="libraryCount">0</div>
+                                <div id="librarySell" class="buildingSell">sell</div>
+                            </div><!--
+                            --></div>
+                        <div id="housing building" class="buildingCatogry">
+                            housing: <br>
+                            <div id="simple hut" class="buildingButton">
+                                <div id="simple hutBuy" class="buildingBuy">
+                                    <span class="buildingText">simple hut</span>
+                                </div>
+                                <div class="buildingCount" id="simple hutCount">0</div>
+                                <div id="simple hutSell" class="buildingSell">sell</div>
+                            </div><!--
+                            --></div>
+                        <button onclick="cheatTest('+')"></button><button onclick="cheatTest('-')"></button><button id="warfareButton"></button>
+                    </div> 
                 </div>  
             </div>
             <div id="events" class="events">
